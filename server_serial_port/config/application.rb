@@ -1,6 +1,8 @@
 require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
+require 'RMagick'
+
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -12,14 +14,6 @@ module ServerSerialPort
   class Application < Rails::Application
     config.assets.paths << "#{Rails}/vendor/assets/fonts"
     
-    port_str = "/dev/tty.usbmodem1411"  #may be different for you
-    baud_rate = 9600
-    data_bits = 8
-    stop_bits = 1
-    parity = SerialPort::NONE
-
-
-    sp = SerialPort.new(port_str, baud_rate, data_bits, stop_bits, parity)
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
