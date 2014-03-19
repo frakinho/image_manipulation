@@ -1,0 +1,31 @@
+<h3>Erro: <%= @error - 0.001 %></h3>
+<h3>Total: <%= @book_count %></h3>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Barcode</th>
+      <th>Weight</th>
+      <th>Other Weight</th>
+      <th>Difference</th>
+      <th>Title</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @books.each do |book| %>
+      <tr>
+        <td><%= book.barcode %></td>
+        <td><%= book.weight %></td>
+        <td><%= book.other_weight %></td>
+        <td><%= (book.weight - book.other_weight).round(3) %>
+        <td><%= book.title %></td>
+        <td><%= link_to 'Show', book ,:class=>"btn btn-success"%></td>
+        <td><%= link_to 'Edit', edit_book_path(book), :class=>"btn btn-info"%></td>
+        <td><%= link_to 'Destroy', book, method: :delete, data: { confirm: 'Are you sure?' },:class=>"btn btn-danger" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -1,0 +1,33 @@
+<%= form_for(@book) do |f| %>
+  <% if @book.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@book.errors.count, "error") %> prohibited this book from being saved:</h2>
+
+      <ul>
+      <% @book.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="control-group">
+    <%= f.label :barcode ,:class=>"control-label"%><br>
+    <%= f.text_field :barcode, :class=>"form-control" %>
+  </div>
+  <div class="control-group">
+    <%= f.label :weight ,:class=>"control-label"%><br>
+    <%= f.text_field :weight, :class=>"form-control" %>
+  </div>
+  <div class="control-group">
+    <%= f.label :other_weight ,:class=>"control-label"%><br>
+    <%= f.text_field :other_weight, :class=>"form-control" %>
+  </div>
+  <div class="control-group">
+    <%= f.label :title ,:class=>"control-label"%><br>
+    <%= f.text_field :title, :class=>"form-control" %>
+  </div>
+  <div class="form-actions">
+    <%= f.submit "Create", :class=>"btn btn-primary" %>
+  </div>
+<% end %>

@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  barcode: MyString
+  double: 
+  title: MyString
+
+two:
+  barcode: MyString
+  double: 
+  title: MyString

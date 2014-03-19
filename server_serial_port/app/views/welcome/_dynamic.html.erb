@@ -1,0 +1,11 @@
+<% if defined? partil_value %>
+	<div class="balance_values">
+		<span id="read_value"> <%= partil_value %></span> Kg
+	</div>
+	<br>
+	<%= link_to('Save',new_book_path(:weight => partil_value),:class=>"btn btn-success" ) %>
+	<%= link_to('Search',search_path(:weight => partil_value),:class=>"btn btn-info" ) %>
+<% else %>
+	A iniciar...
+<% end %>
+
