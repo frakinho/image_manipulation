@@ -2,7 +2,7 @@ require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
 require 'RMagick'
-
+include Magick
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
