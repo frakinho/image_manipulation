@@ -15,51 +15,124 @@ class ImageController < ApplicationController
                         end
     puts "   Depth: #{img.depth} bits-per-pixel"
 
+
+    
+
     @img_view = img
 
-    a = img.gaussian_blur(radius=2.0, sigma=5.0)
-    
-    #a.display
-    #b = img.quantize(number_colors=256, colorspace=Magick::GRAYColorspace, dither=true, tree_depth=0, measure_error=false)
-    a.image_type = Magick::BilevelType
+    #a = img.blur_image(radius=1.0, sigma=2.0)
+
+    a = img.median_filter(radius=3)
+
 
     a.display
 
-    b = img.median_filter(radius=8.0)
+    b = a.median_filter(radius=3)
 
     b.display
+
+    c = b.edge(radius=2)
+
+    c.display
+
+    c.image_type = Magick::BilevelType
+
+    c.display
+
+    d = c.median_filter(radius=3)
+
+    d.display
+
+    #d.display
+    #img.image_type = Magick::BilevelType
+    #c = img.median_filter(radius=8)
+    #d = c.edge(radius=0)
+    #d.display
+    #c = b.median_filter(radius=8)
+    #d = c.edge(radius=2)
+
+    #bound = d.bounding_box
+    #gc = Magick::Draw.new
+    #gc.stroke("gray50")
+    #gc.fill_opacity(0)
+    #gc.rectangle(bound.x, bound.y, bound.x+bound.width, bound.y+bound.height)
+    #gc.stroke("red")
+    #gc.circle(bound.x, bound.y, bound.x+2, bound.y+2)
+    #gc.circle(bound.x+bound.width, bound.y, bound.x+bound.width+2, bound.y+2)
+    #gc.circle(bound.x, bound.y+bound.height, bound.x+2, bound.y+bound.height+2)
+    #gc.circle(bound.x+bound.width, bound.y+bound.height, bound.x+bound.width+2, bound.y+bound.height+2)
+    #gc.fill("white")
+    #gc.stroke("transparent")
+    #gc.text(bound.x-15, bound.y-5, "\'#{bound.x},#{bound.y}\'")
+    #gc.text(bound.x+bound.width-15, bound.y-5, "\'#{bound.x+bound.width},#{bound.y}\'")
+    #gc.text(bound.x-15, bound.y+bound.height+15, "\'#{bound.x},#{bound.y+bound.height}\'")
+    #gc.text(bound.x+bound.width-15, bound.y+bound.height+15, "\'#{bound.x+bound.width},#{bound.y+bound.height}\'")
+
+    #gc.draw(d)
+    
+    pix = d.pixel_color(451,220)
+
+    puts "Red:#{(pix.red)} - Blue:#{(pix.blue)} - Green:#{(pix.green)}"
+
+    top = [0,0]
+    bottom = [0,d.rows]
+    left = [0,0]
+    right = [d.columns,0]
+
+
+    ##FIND TOP_LEFT
+    d.each_pixel do |pixel, col, row|
+      
+      if pixel.red == 65535 && pixel.green == 65535 && pixel.blue == 65535 && top[0] == 0
+        d.pixel_color(col,row,"red")
+        top[0] = row
+        top[1] = col
+      end 
+    end
+
+    puts top
+
+    d.display
+    #b = img.quantize(number_colors=256, colorspace=Magick::GRAYColorspace, dither=true, tree_depth=0, measure_error=false)
+    #a.image_type = Magick::BilevelType
+
+    #a.display
+
+    #b = img.median_filter(radius=8.0)
+
+    #b.display
 
     #c = b.reduce_noise(radius=10)
 
     #c.display
 
-    d = b.edge(radius=0.1)
+    #d = b.edge(radius=0.1)
 
-    bound = d.bounding_box
+    #bound = d.bounding_box
     
 
-	gc = Magick::Draw.new
-	gc.stroke("gray50")
-	gc.fill_opacity(0)
-	gc.rectangle(bound.x, bound.y, bound.x+bound.width, bound.y+bound.height)
-	gc.stroke("red")
-	gc.circle(bound.x, bound.y, bound.x+2, bound.y+2)
-	gc.circle(bound.x+bound.width, bound.y, bound.x+bound.width+2, bound.y+2)
-	gc.circle(bound.x, bound.y+bound.height, bound.x+2, bound.y+bound.height+2)
-	gc.circle(bound.x+bound.width, bound.y+bound.height, bound.x+bound.width+2, bound.y+bound.height+2)
+  	#gc = Magick::Draw.new
+    #gc.stroke("gray50")
+    #gc.fill_opacity(0)
+    #gc.rectangle(bound.x, bound.y, bound.x+bound.width, bound.y+bound.height)
+    #gc.stroke("red")
+  	#gc.circle(bound.x, bound.y, bound.x+2, bound.y+2)
+  	#gc.circle(bound.x+bound.width, bound.y, bound.x+bound.width+2, bound.y+2)
+  	#gc.circle(bound.x, bound.y+bound.height, bound.x+2, bound.y+bound.height+2)
+  	#gc.circle(bound.x+bound.width, bound.y+bound.height, bound.x+bound.width+2, bound.y+bound.height+2)
 
-	gc.fill("white")
-	gc.stroke("transparent")
-	gc.text(bound.x-15, bound.y-5, "\'#{bound.x},#{bound.y}\'")
-	gc.text(bound.x+bound.width-15, bound.y-5, "\'#{bound.x+bound.width},#{bound.y}\'")
-	gc.text(bound.x-15, bound.y+bound.height+15, "\'#{bound.x},#{bound.y+bound.height}\'")
-	gc.text(bound.x+bound.width-15, bound.y+bound.height+15, "\'#{bound.x+bound.width},#{bound.y+bound.height}\'")
+  	#gc.fill("white")
+  	#gc.stroke("transparent")
+  	#gc.text(bound.x-15, bound.y-5, "\'#{bound.x},#{bound.y}\'")
+  	#gc.text(bound.x+bound.width-15, bound.y-5, "\'#{bound.x+bound.width},#{bound.y}\'")
+  	#gc.text(bound.x-15, bound.y+bound.height+15, "\'#{bound.x},#{bound.y+bound.height}\'")
+  	#gc.text(bound.x+bound.width-15, bound.y+bound.height+15, "\'#{bound.x+bound.width},#{bound.y+bound.height}\'")
 
 
-	gc.draw(d)
-    d.display
+  	#gc.draw(d)
+    #d.display
 
-    d.write("final_book.jpg")
+    #d.write("final_book.jpg")
 
     #coisa = @img_view.blur_image(radius=20.0, sigma=1.0)
 
