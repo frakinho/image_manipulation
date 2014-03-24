@@ -4,7 +4,7 @@ class ImageController < ApplicationController
 
   	file_name = "file:///home/frakinho/image_manipulation/server_serial_port/app/assets/images/coisa.jpg"
 
-    img = Magick::Image::read("file:///home/frakinho/image_manipulation/server_serial_port/app/assets/images/book1.jpg").first
+    img = Magick::Image::read("file:///Users/frakinho/Documents/Arduino/rails_server/server_serial_port/app/assets/images/book1.jpg").first
     puts "   Format: #{img.format}"
     puts "   Geometry: #{img.columns}x#{img.rows}"
     puts "   Class: " + case img.class_type
