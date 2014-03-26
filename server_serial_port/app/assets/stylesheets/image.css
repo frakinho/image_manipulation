@@ -1,0 +1,24 @@
+.style_image {
+  	height: 250px;
+	width: 200px;
+	padding-top: 20px;
+}
+
+.index_image_stype {
+	padding-left: 20px;
+	padding-top: 20px;
+}
+
+.image_and_name {
+	float:left;
+}
+
+.image_and_name a {
+	text-align:center;
+	font-size: 20px;
+}
+
+
+.clearBoth { 
+	clear:both; 
+}
