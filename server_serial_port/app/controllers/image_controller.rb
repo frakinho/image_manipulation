@@ -226,19 +226,44 @@ class ImageController < ApplicationController
   end
 
   def manipulation
-    img = Magick::Image::read("file:///home/frakinho/image_manipulation/server_serial_port/app/assets/images/no_me_test.jpg").first
-    img2 = Magick::Image::read("file:///home/frakinho/image_manipulation/server_serial_port/app/assets/images/me_test.jpg").first
+    img = Magick::Image::read("file:///home/frakinho/image_manipulation/server_serial_port/app/assets/images/me_test.jpg").first
+    img2 = Magick::Image::read("file:///home/frakinho/image_manipulation/server_serial_port/app/assets/images/no_me_test.jpg").first
     
+    #a = img.auto_gamma_channel
+    #a.display
+    #b = img2.auto_gamma_channel
+    #b.display
+    #img = a
+    #img2 = b
 
+    img = img.quantize(256, Magick::GRAYColorspace)
+    img2 = img2.quantize(256, Magick::GRAYColorspace)
+
+    img.display
     img2.display
 
-    d = img2.modulate(brightness=1.0, saturation=1.0, hue=1.0)
-    d.display
     img.each_pixel do |pixel, col, row|
       
       pixel_img2 = img2.pixel_color(col,row)
 
-      a = Pixel.new((pixel.red - pixel_img2.red).abs, (pixel.green - pixel_img2.green).abs, (pixel.blue - pixel_img2.blue).abs, pixel.opacity)
+      red   = pixel.red - pixel_img2.red 
+      green = pixel.green - pixel_img2.green
+      blue  = pixel.blue - pixel_img2.blue
+
+      if red < 0 
+        red = 0
+      end
+
+      if green < 0
+        green = 0 
+      end
+
+      if blue < 0
+        blue = 0 
+      end
+
+
+      a = Pixel.new(red, green, blue, pixel.opacity)
       img.pixel_color(col,row,a)
 
 
