@@ -17,8 +17,6 @@ class ImageController < ApplicationController
                         end
     puts "   Depth: #{img.depth} bits-per-pixel"
 
-    
-
     @img_view = img
 
     #a = img.blur_image(radius=1.0, sigma=2.0)
@@ -274,5 +272,109 @@ class ImageController < ApplicationController
 
   def live
 
+
+
+  end
+
+  def compare
+    img = Magick::Image::read("file:///home/frakinho/image_manipulation/server_serial_port/app/assets/images/book15.jpg").first
+    i2g = Magick::Image::read("file:///home/frakinho/image_manipulation/server_serial_port/app/assets/images/book16.jpg").first
+
+    img = img.quantize(number_colors=256)
+
+    i2g = i2g.quantize(number_colors=256)
+
+
+
+    img = img.set_channel_depth(AllChannels,8)
+    a = img.color_histogram
+    b = i2g.color_histogram
+
+    teste   = {}
+    testeb  = {}
+    i = 0
+    while i < 260
+      teste[i] = 0
+      testeb[i] = 0
+
+      i = i + 10
+    end 
+
+
+
+
+    #First image
+    a.each do |pixel|
+      #red
+      value_convert_8bit = pixel[0].red / 257
+      value = value_convert_8bit - (value_convert_8bit % 10) 
+
+      #green
+      value_convert_8bit_green = pixel[0].green / 257
+      value_green = value_convert_8bit_green - (value_convert_8bit_green % 10) 
+
+      #blue
+      value_convert_8bit_blue = pixel[0].blue / 257
+      value_blue = value_convert_8bit_blue - (value_convert_8bit_blue % 10)  
+
+      if teste[value].nil?
+        teste[value] = pixel[1]
+      else
+        teste[value] = teste[value] + pixel[1]
+      end
+    end
+
+    #Second image
+    b.each do |pixel|
+      value_convert_8bit = pixel[0].red / 257
+      value = value_convert_8bit - (value_convert_8bit % 10)
+
+      if testeb[value].nil?
+        testeb[value] = pixel[1]
+      else
+        testeb[value] = testeb[value] + pixel[1]
+      end
+      
+    end
+    
+    st_write_to_file = ""
+    st_write_to_file_down = ""
+
+    st_write_to_file_b = ""
+    st_write_to_file_down_b = ""
+
+    File.open('/home/frakinho/Desktop/fix.csv', 'w') do |f1|  
+
+      teste.each do |t|
+        st_write_to_file = st_write_to_file + "#{t[0]},"
+        st_write_to_file_down = st_write_to_file_down + "#{t[1]},"
+      end
+
+      testeb.each do |t|
+        st_write_to_file_b = st_write_to_file_b + "#{t[0]},"
+        st_write_to_file_down_b = st_write_to_file_down_b + "#{t[1]},"
+      end
+
+      f1.puts st_write_to_file
+      f1.puts st_write_to_file_down
+      f1.puts st_write_to_file_b
+      f1.puts st_write_to_file_down_b
+    end  
+
+
+
+    ## Calculate diference
+    dif = 0
+    teste.each do |valor|
+      if !testeb[valor[0]].nil?
+        dif = dif + (testeb[valor[0]] - valor[1]).abs
+      else 
+        dif = dif + valor[0]
+      end
+    end 
+
+    dif
+
+    lksajdjkla
   end
 end
