@@ -4,7 +4,7 @@ ServerSerialPort::Application.routes.draw do
   get "image/manipulation"
   get "image/index"
   get "image/live"
-  
+  get "image/compare"
   resources :books
 
   # The priority is based upon order of creation: first created -> highest priority.

@@ -1,0 +1,9 @@
+<h1>Compare</h1>
+
+<%= image_tag @img_filename, :class => "style_image"%>
+<%= image_tag @img2_filename, :class => "style_image"%> <br >
+
+Dif red channel: <%= @dif_red_channel %> <br >
+Dif blue channel: <%= @dif_blue_channel %> <br >
+Dif green channel: <%= @dif_green_channel %> <br >
+Dif total: <%= @dif_red_channel + @dif_blue_channel + @dif_green_channel %>
