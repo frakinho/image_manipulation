@@ -2,9 +2,9 @@ class ImageController < ApplicationController
   
   def load
 
-  	file_name = "file:///home/frakinho/image_manipulation/server_serial_port/app/assets/images/coisa.jpg"
+  	#file_name = "file:///home/frakinho/image_manipulation/server_serial_port/app/assets/images/coisa.jpg"
 
-    img = Magick::Image::read("file:///home/frakinho/image_manipulation/server_serial_port/app/assets/images/#{params[:image]}").first
+    img = Magick::Image::read("file:///home/plima/image_manipulation/image_manipulation/server_serial_port/app/assets/images/#{params[:image]}").first
 
 
     puts "   Format: #{img.format}"
@@ -224,8 +224,8 @@ class ImageController < ApplicationController
   end
 
   def manipulation
-    img = Magick::Image::read("file:///home/frakinho/image_manipulation/server_serial_port/app/assets/images/me_test.jpg").first
-    img2 = Magick::Image::read("file:///home/frakinho/image_manipulation/server_serial_port/app/assets/images/no_me_test.jpg").first
+    img = Magick::Image::read("file:///home/plima/image_manipulation/image_manipulation/server_serial_port/app/assets/images/me_test.jpg").first
+    img2 = Magick::Image::read("file:///home/plima/image_manipulation/image_manipulation/server_serial_port/app/assets/images/no_me_test.jpg").first
     
     #a = img.auto_gamma_channel
     #a.display
@@ -270,15 +270,19 @@ class ImageController < ApplicationController
     img.display
   end
 
+
   def live
-
-
 
   end
 
+
   def compare
-    img = Magick::Image::read("file:///home/frakinho/image_manipulation/server_serial_port/app/assets/images/book15.jpg").first
-    i2g = Magick::Image::read("file:///home/frakinho/image_manipulation/server_serial_port/app/assets/images/book16.jpg").first
+
+    @img_filename = "book2.jpg"
+    @img2_filename = "book5.jpg"
+
+    img = Magick::Image::read("/home/plima/image_manipulation/image_manipulation/server_serial_port/app/assets/images/#{@img_filename}").first
+    i2g = Magick::Image::read("/home/plima/image_manipulation/image_manipulation/server_serial_port/app/assets/images/#{@img2_filename}").first
 
     img = img.quantize(number_colors=256)
 
@@ -292,10 +296,28 @@ class ImageController < ApplicationController
 
     teste   = {}
     testeb  = {}
+    
+    # Dif between two images, the diference is based on diference between the red, blue and green channel 
+    list_red_channel_first_img = {}
+    list_blue_channel_first_img = {}
+    list_green_channel_first_img = {}
+
+    list_red_channel_second_img = {}
+    list_blue_channel_second_img = {}
+    list_green_channel_second_img = {}
+
+    #Init array
     i = 0
     while i < 260
-      teste[i] = 0
-      testeb[i] = 0
+      list_red_channel_first_img[i] = 0
+      list_blue_channel_first_img[i] = 0
+      list_green_channel_first_img[i] = 0
+
+      list_red_channel_second_img[i] = 0
+      list_blue_channel_second_img[i] = 0
+      list_green_channel_second_img[i] = 0
+      #teste[i] = 0
+      #testeb[i] = 0
 
       i = i + 10
     end 
@@ -307,7 +329,7 @@ class ImageController < ApplicationController
     a.each do |pixel|
       #red
       value_convert_8bit = pixel[0].red / 257
-      value = value_convert_8bit - (value_convert_8bit % 10) 
+      value_red = value_convert_8bit - (value_convert_8bit % 10) 
 
       #green
       value_convert_8bit_green = pixel[0].green / 257
@@ -317,48 +339,98 @@ class ImageController < ApplicationController
       value_convert_8bit_blue = pixel[0].blue / 257
       value_blue = value_convert_8bit_blue - (value_convert_8bit_blue % 10)  
 
-      if teste[value].nil?
-        teste[value] = pixel[1]
-      else
-        teste[value] = teste[value] + pixel[1]
-      end
+      #Add value to array
+      list_red_channel_first_img[value_red] = list_red_channel_first_img[value_red] + pixel[1]
+      list_blue_channel_first_img[value_blue] = list_red_channel_first_img[value_blue] + pixel[1]
+      list_green_channel_first_img[value_green] = list_red_channel_first_img[value_green] + pixel[1]
+
     end
 
     #Second image
     b.each do |pixel|
+      #red
       value_convert_8bit = pixel[0].red / 257
-      value = value_convert_8bit - (value_convert_8bit % 10)
+      value_red = value_convert_8bit - (value_convert_8bit % 10) 
 
-      if testeb[value].nil?
-        testeb[value] = pixel[1]
-      else
-        testeb[value] = testeb[value] + pixel[1]
-      end
+      #green
+      value_convert_8bit_green = pixel[0].green / 257
+      value_green = value_convert_8bit_green - (value_convert_8bit_green % 10) 
+
+      #blue
+      value_convert_8bit_blue = pixel[0].blue / 257
+      value_blue = value_convert_8bit_blue - (value_convert_8bit_blue % 10)  
+
+      #Add value to array
+      list_red_channel_second_img[value_red] = list_red_channel_second_img[value_red] + pixel[1]
+      list_blue_channel_second_img[value_blue] = list_red_channel_second_img[value_blue] + pixel[1]
+      list_green_channel_second_img[value_green] = list_red_channel_second_img[value_green] + pixel[1]
       
     end
+
+    first_line = ""
     
-    st_write_to_file = ""
-    st_write_to_file_down = ""
+    #Variable to write in file
+    st_write_red_channel_first_img = ""
+    st_write_blue_channel_first_img = ""
+    st_write_green_channel_first_img = ""
+    
+    st_write_red_channel_second_img = ""
+    st_write_blue_channel_second_img = ""
+    st_write_green_channel_second_img = ""
 
-    st_write_to_file_b = ""
-    st_write_to_file_down_b = ""
 
-    File.open('/home/frakinho/Desktop/fix.csv', 'w') do |f1|  
+    @dif_red_channel = 0
+    @dif_blue_channel = 0
+    @dif_green_channel = 0
 
-      teste.each do |t|
-        st_write_to_file = st_write_to_file + "#{t[0]},"
-        st_write_to_file_down = st_write_to_file_down + "#{t[1]},"
+    File.open('/home/plima/Desktop/fix.csv', 'w') do |f1|  
+
+      #write array two csv file, for analyse in a spreadsheet
+      #First IMAGE
+      #RED
+      list_red_channel_first_img.each do |value|
+        first_line = first_line + "#{value[0]},"
+        st_write_red_channel_first_img = st_write_red_channel_first_img + "#{value[1]},"
+
+        @dif_red_channel = @dif_red_channel + (value[1] - list_red_channel_second_img[value[0]]).abs
+      end
+      #BLUE
+      list_blue_channel_first_img.each do |value|
+        st_write_blue_channel_first_img = st_write_blue_channel_first_img + "#{value[1]},"
+
+        @dif_blue_channel = @dif_blue_channel + (value[1] - list_blue_channel_second_img[value[0]]).abs
+      end
+      #GREEN
+      list_green_channel_first_img.each do |value|
+        st_write_green_channel_first_img = st_write_green_channel_first_img + "#{value[1]},"
+      
+        @dif_green_channel = @dif_green_channel + (value[1] - list_green_channel_second_img[value[0]]).abs
       end
 
-      testeb.each do |t|
-        st_write_to_file_b = st_write_to_file_b + "#{t[0]},"
-        st_write_to_file_down_b = st_write_to_file_down_b + "#{t[1]},"
+      #Second IMAGE
+      list_red_channel_second_img.each do |value|
+        st_write_red_channel_second_img = st_write_red_channel_second_img + "#{value[1]},"
+      end
+      
+      list_blue_channel_second_img.each do |value|
+        st_write_blue_channel_second_img = st_write_blue_channel_second_img + "#{value[1]},"
+      end
+      
+      list_green_channel_second_img.each do |value|
+        st_write_green_channel_second_img = st_write_green_channel_second_img + "#{value[1]},"
       end
 
-      f1.puts st_write_to_file
-      f1.puts st_write_to_file_down
-      f1.puts st_write_to_file_b
-      f1.puts st_write_to_file_down_b
+      f1.puts first_line
+
+      f1.puts st_write_red_channel_first_img
+      f1.puts st_write_blue_channel_first_img
+      f1.puts st_write_green_channel_first_img
+
+      f1.puts "\n"
+
+      f1.puts st_write_red_channel_second_img
+      f1.puts st_write_blue_channel_second_img
+      f1.puts st_write_green_channel_second_img
     end  
 
 
@@ -375,6 +447,5 @@ class ImageController < ApplicationController
 
     dif
 
-    lksajdjkla
   end
 end
