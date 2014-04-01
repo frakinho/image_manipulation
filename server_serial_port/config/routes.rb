@@ -5,6 +5,8 @@ ServerSerialPort::Application.routes.draw do
   get "image/index"
   get "image/live"
   get "image/compare"
+  get "image/distance_diference"
+  
   resources :books
 
   # The priority is based upon order of creation: first created -> highest priority.

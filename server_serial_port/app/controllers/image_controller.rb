@@ -473,4 +473,51 @@ asdsda
     dif
 
   end
+
+
+  #Distance between RGB in same position in two images 
+  def distance_diference
+
+    ##@img_filename = "book2_blue_no_table.jpg"
+    ##@img2_filename = "book2_green_no_table.jpg"
+    
+    @img_filename = params[:compare][0]
+    @img2_filename = params[:compare][1]
+
+    img = Magick::Image::read("/home/frakinho/image_manipulation/server_serial_port/app/assets/images/#{@img_filename}").first
+    i2g = Magick::Image::read("/home/frakinho/image_manipulation/server_serial_port/app/assets/images/#{@img2_filename}").first
+
+    img = img.resize(350, 460)
+    i2g = i2g.resize(350, 460)
+
+    max_dif = 0
+    min_dif = 999999999
+
+    total_dif = 0
+
+    img.each_pixel do |pixel,column,row|
+      red_dif   = (pixel.red - i2g.pixel_color(column,row).red)     
+      green_dif = (pixel.green - i2g.pixel_color(column,row).green) 
+      blue_dif  = (pixel.blue - i2g.pixel_color(column,row).blue)   
+
+
+      dif = Math.sqrt(red_dif*red_dif + green_dif*green_dif + blue_dif*blue_dif)
+      total_dif = total_dif + dif
+
+      if max_dif < dif
+        max_dif = dif
+      end 
+
+      if min_dif > dif
+        min_dif = dif
+      end
+
+    end
+
+
+    ajlsdakldsljkajklsd
+    i2g.display
+
+  end
+
 end
