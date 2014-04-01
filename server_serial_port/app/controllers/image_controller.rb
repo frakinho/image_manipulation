@@ -170,6 +170,8 @@ class ImageController < ApplicationController
 
     gc_1.draw(img)
     img.display
+
+
     #b = img.quantize(number_colors=256, colorspace=Magick::GRAYColorspace, dither=true, tree_depth=0, measure_error=false)
     #a.image_type = Magick::BilevelType
 
@@ -227,6 +229,9 @@ class ImageController < ApplicationController
     img = Magick::Image::read("file:///home/plima/image_manipulation/image_manipulation/server_serial_port/app/assets/images/me_test.jpg").first
     img2 = Magick::Image::read("file:///home/plima/image_manipulation/image_manipulation/server_serial_port/app/assets/images/no_me_test.jpg").first
     
+    img = img.resize_to_fit(350, 460)
+    img2 = img.resize_to_fit(350, 460)
+asdsda
     #a = img.auto_gamma_channel
     #a.display
     #b = img2.auto_gamma_channel
@@ -278,11 +283,18 @@ class ImageController < ApplicationController
 
   def compare
 
-    @img_filename = "book2.jpg"
-    @img2_filename = "book5.jpg"
+    @img_filename = params[:compare][0]
+    @img2_filename = params[:compare][1]
 
     img = Magick::Image::read("/home/plima/image_manipulation/image_manipulation/server_serial_port/app/assets/images/#{@img_filename}").first
     i2g = Magick::Image::read("/home/plima/image_manipulation/image_manipulation/server_serial_port/app/assets/images/#{@img2_filename}").first
+
+    img = img.resize(350, 460)
+    i2g = i2g.resize(350, 460)
+
+    img.display
+    i2g.display
+
 
     img = img.quantize(number_colors=256)
 
@@ -366,6 +378,7 @@ class ImageController < ApplicationController
       list_green_channel_second_img[value_green] = list_red_channel_second_img[value_green] + pixel[1]
       
     end
+
 
     first_line = ""
     

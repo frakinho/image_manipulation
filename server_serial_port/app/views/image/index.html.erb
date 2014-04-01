@@ -1,14 +1,20 @@
 <h1>List of images</h1>
 
 <div class="index_image_stype">
-<% @images.each do |image| %>
-	<div class="image_and_name">
-   		<%= image_tag "#{image.split('/').last}", :class => "style_image" %> <br >
-   		<span>File:</span> <%= link_to "#{image.split('/').last}",  image_load_path(:image => image.split('/').last) %> <br>
-   		
-   		<input type="checkbox" name="compare_#{image.split('/').last}" value="Bike"> Compare
+<%= form_tag("/image/compare", method: "get") do %>
+
+	<% @images.each do |image| %>
+		<div class="image_and_name">
+	   		<%= image_tag "#{image.split('/').last}", :class => "style_image" %> <br >
+	   		<span>File:</span> <%= link_to "#{image.split('/').last}",  image_load_path(:image => image.split('/').last) %> <br>
+	   		
+	   		<input type="checkbox" name="compare[]" value="<%= image.split('/').last %>"> Compare
 
 
-   	</div>
+	   	</div>
+	<% end %>
+
+
+<%= submit_tag("Search") %>
 <% end %>
 </div>

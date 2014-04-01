@@ -1,8 +1,14 @@
 <h1>Compare</h1>
-
-<%= image_tag @img_filename, :class => "style_image"%>
-<%= image_tag @img2_filename, :class => "style_image"%> <br >
-
+<div class="index_image_stype">
+	<div class="image_and_name">
+		<%= image_tag @img_filename, :class => "style_image"%> <br >
+		<%= link_to "Limit detection",image_load_path(:image => @img_filename) %>
+	</div>
+	<div class="image_and_name">
+		<%= image_tag @img2_filename, :class => "style_image"%> <br >
+		<%= link_to "Limit detection",image_load_path(:image => @img2_filename) %>
+	</div>
+</div>
 Dif red channel: <%= @dif_red_channel %> <br >
 Dif blue channel: <%= @dif_blue_channel %> <br >
 Dif green channel: <%= @dif_green_channel %> <br >
