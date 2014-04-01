@@ -4,7 +4,7 @@ class ImageController < ApplicationController
 
   	#file_name = "file:///home/frakinho/image_manipulation/server_serial_port/app/assets/images/coisa.jpg"
 
-    img = Magick::Image::read("file:///home/plima/image_manipulation/image_manipulation/server_serial_port/app/assets/images/#{params[:image]}").first
+    img = Magick::Image::read("file:///home/frakinho/image_manipulation/server_serial_port/app/assets/images/#{params[:image]}").first
 
 
     puts "   Format: #{img.format}"
@@ -226,8 +226,8 @@ class ImageController < ApplicationController
   end
 
   def manipulation
-    img = Magick::Image::read("file:///home/plima/image_manipulation/image_manipulation/server_serial_port/app/assets/images/me_test.jpg").first
-    img2 = Magick::Image::read("file:///home/plima/image_manipulation/image_manipulation/server_serial_port/app/assets/images/no_me_test.jpg").first
+    img = Magick::Image::read("file:///home/frakinho/image_manipulation/server_serial_port/app/assets/images/me_test.jpg").first
+    img2 = Magick::Image::read("file:///home/frakinho/image_manipulation/server_serial_port/app/assets/images/no_me_test.jpg").first
     
     img = img.resize_to_fit(350, 460)
     img2 = img.resize_to_fit(350, 460)
@@ -286,11 +286,23 @@ asdsda
     @img_filename = params[:compare][0]
     @img2_filename = params[:compare][1]
 
-    img = Magick::Image::read("/home/plima/image_manipulation/image_manipulation/server_serial_port/app/assets/images/#{@img_filename}").first
-    i2g = Magick::Image::read("/home/plima/image_manipulation/image_manipulation/server_serial_port/app/assets/images/#{@img2_filename}").first
+    img = Magick::Image::read("/home/frakinho/image_manipulation/server_serial_port/app/assets/images/#{@img_filename}").first
+    i2g = Magick::Image::read("/home/frakinho/image_manipulation/server_serial_port/app/assets/images/#{@img2_filename}").first
 
     img = img.resize(350, 460)
     i2g = i2g.resize(350, 460)
+
+    img = img.auto_level_channel
+    i2g = i2g.auto_level_channel
+
+    img = img.despeckle
+    i2g = i2g.despeckle
+
+    img = img.auto_gamma_channel(LuminosityChannel)
+    i2g = i2g.auto_gamma_channel(LuminosityChannel)
+
+    img = img.median_filter(radius=10)
+    i2g = i2g.median_filter(radius=10)
 
     img.display
     i2g.display
@@ -396,7 +408,7 @@ asdsda
     @dif_blue_channel = 0
     @dif_green_channel = 0
 
-    File.open('/home/plima/Desktop/fix.csv', 'w') do |f1|  
+    File.open('/home/frakinho/Desktop/fix.csv', 'w') do |f1|  
 
       #write array two csv file, for analyse in a spreadsheet
       #First IMAGE
