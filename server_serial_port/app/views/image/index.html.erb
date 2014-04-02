@@ -8,7 +8,7 @@
 	   		<%= image_tag "#{image.split('/').last}", :class => "style_image" %> <br >
 	   		<span>File:</span> <%= link_to "#{image.split('/').last}",  image_load_path(:image => image.split('/').last) %> <br>
 	   		
-	   		<input type="checkbox" name="compare[]" value="<%= image.split('/').last %>"> Compare
+	   		<input class="checkbox" type="checkbox" name="compare[]" value="<%= image.split('/').last %>"> Compare
 
 
 	   	</div>

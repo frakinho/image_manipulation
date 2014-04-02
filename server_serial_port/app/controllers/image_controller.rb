@@ -484,16 +484,24 @@ asdsda
     @img_filename = params[:compare][0]
     @img2_filename = params[:compare][1]
 
+    s = SSIM.new("Paulo","Lima")
+    asdkmdakjsdljk
     img = Magick::Image::read("/home/frakinho/image_manipulation/server_serial_port/app/assets/images/#{@img_filename}").first
     i2g = Magick::Image::read("/home/frakinho/image_manipulation/server_serial_port/app/assets/images/#{@img2_filename}").first
 
     img = img.resize(350, 460)
     i2g = i2g.resize(350, 460)
 
-    max_dif = 0
-    min_dif = 999999999
+    img = img.median_filter(radius=10)
+    i2g = i2g.median_filter(radius=10)
 
-    total_dif = 0
+    img.display
+    i2g.display
+
+    @max_dif = 0
+    @min_dif = 999999999
+
+    @total_dif = 0
 
     img.each_pixel do |pixel,column,row|
       red_dif   = (pixel.red - i2g.pixel_color(column,row).red)     
@@ -502,21 +510,18 @@ asdsda
 
 
       dif = Math.sqrt(red_dif*red_dif + green_dif*green_dif + blue_dif*blue_dif)
-      total_dif = total_dif + dif
+      @total_dif = @total_dif + dif
 
-      if max_dif < dif
-        max_dif = dif
+      if @max_dif < dif
+        @max_dif = dif
       end 
 
-      if min_dif > dif
-        min_dif = dif
+      if @min_dif > dif
+        @min_dif = dif
       end
-
     end
 
-
-    ajlsdakldsljkajklsd
-    i2g.display
+    kljlaksdljka
 
   end
 
