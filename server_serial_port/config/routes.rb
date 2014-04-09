@@ -1,4 +1,6 @@
 ServerSerialPort::Application.routes.draw do
+  resources :lendings
+
   get "image/load"
   get "image/save"
   get "image/manipulation"
@@ -16,6 +18,8 @@ ServerSerialPort::Application.routes.draw do
   root 'welcome#index'
 
   get "refresh_header" => "welcome#refresh_header"
+
+  post "processing_upload" => "image#processing_upload"
 
   get 'search',  to: 'books#search', as: :search
 

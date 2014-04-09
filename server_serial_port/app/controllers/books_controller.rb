@@ -42,6 +42,10 @@ class BooksController < ApplicationController
   # GET /books/1
   # GET /books/1.json
   def show
+    img = Image_Similarity.new
+
+    img.size_calculation
+    img.hist_color_diference
   end
 
   # GET /books/new
@@ -102,6 +106,6 @@ class BooksController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def book_params
-      params.require(:book).permit(:barcode, :weight, :title, :other_weight)
+      params.require(:book).permit(:barcode, :weight, :title, :other_weight).permit(:image)
     end
 end

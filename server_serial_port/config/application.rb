@@ -13,6 +13,9 @@ Bundler.require(:default, Rails.env)
 module ServerSerialPort
   class Application < Rails::Application
     config.assets.paths << "#{Rails}/vendor/assets/fonts"
+
+    # Add variable to DEBUG 
+    config.my_app = ActiveSupport::OrderedOptions.new
     
 
     # Settings in config/environments/* take precedence over those specified here.

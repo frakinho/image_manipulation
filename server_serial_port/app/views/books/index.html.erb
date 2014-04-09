@@ -4,6 +4,7 @@
 <table class="table">
   <thead>
     <tr>
+      <th>Image</th>
       <th>Barcode</th>
       <th>ID</th>
       <th>Weight</th>
@@ -19,6 +20,7 @@
   <tbody>
     <% @books.each do |book| %>
       <tr>
+        <td><%= image_tag book.image.url(:medium) %></td>
         <td><%= book.barcode %></td>
         <td><%= book.id %></td>
         <td><%= book.weight %></td>

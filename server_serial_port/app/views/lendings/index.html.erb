@@ -1,0 +1,35 @@
+<h1>Listing lendings</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>User</th>
+      <th>Book</th>
+      <th>Size widht</th>
+      <th>Size height</th>
+      <th>Weight</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @lendings.each do |lending| %>
+      <tr>
+        <td><%= lending.user_id %></td>
+        <td><%= lending.book_id %></td>
+        <td><%= lending.size_widht %></td>
+        <td><%= lending.size_height %></td>
+        <td><%= lending.weight %></td>
+        <td><%= link_to 'Show', lending %></td>
+        <td><%= link_to 'Edit', edit_lending_path(lending) %></td>
+        <td><%= link_to 'Destroy', lending, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Lending', new_lending_path %>

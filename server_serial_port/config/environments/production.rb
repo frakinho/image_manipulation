@@ -77,4 +77,8 @@ ServerSerialPort::Application.configure do
 
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
+
+
+  # Debug option
+  config.my_app.debug = false
 end

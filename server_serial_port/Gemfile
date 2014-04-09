@@ -40,6 +40,11 @@ gem 'twitter-bootstrap-rails'
 
 gem 'rmagick'
 
+#Upload photo to book register
+gem "paperclip", "~> 4.1"
+
+# SSIM Algorithm
+
 
 
 # Use ActiveModel has_secure_password

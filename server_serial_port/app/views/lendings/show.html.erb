@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>User:</strong>
+  <%= @lending.user_id %>
+</p>
+
+<p>
+  <strong>Book:</strong>
+  <%= @lending.book_id %>
+</p>
+
+<p>
+  <strong>Size widht:</strong>
+  <%= @lending.size_widht %>
+</p>
+
+<p>
+  <strong>Size height:</strong>
+  <%= @lending.size_height %>
+</p>
+
+<p>
+  <strong>Weight:</strong>
+  <%= @lending.weight %>
+</p>
+
+<%= link_to 'Edit', edit_lending_path(@lending) %> |
+<%= link_to 'Back', lendings_path %>

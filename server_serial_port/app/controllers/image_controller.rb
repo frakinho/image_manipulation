@@ -1,21 +1,36 @@
 class ImageController < ApplicationController
   
+  skip_before_filter :verify_authenticity_token, :only => [:processing_upload]
+
+
+
+  def processing_upload
+    puts "AQUIIIIIIIIIIIIIIIIIIIIIII***********************\n\n\n\n\n\n\n\n\n\n\n\n\n"
+
+    params.each do |key, value| 
+       # target groups using regular expressions
+       puts "Key: #{key} => value: #{value}"
+    end
+
+
+    @book = Book.new(:title => "Teste para novo livro",:weight => 0.120,:other_weight => 0.121,:image => params[:image])
+
+    respond_to do |format|
+      if @book.save
+        format.html { redirect_to @book, notice: 'Book was successfully created.' }
+        format.json { render action: 'show', status: :created, location: @book }
+      else
+        format.html { render action: 'new' }
+        format.json { render json: "Teste", status: :unprocessable_entity }
+      end
+    end
+  end
+
   def load
 
   	#file_name = "file:///home/frakinho/image_manipulation/server_serial_port/app/assets/images/coisa.jpg"
 
     img = Magick::Image::read("file:///home/frakinho/image_manipulation/server_serial_port/app/assets/images/#{params[:image]}").first
-
-
-    puts "   Format: #{img.format}"
-    puts "   Geometry: #{img.columns}x#{img.rows}"
-    puts "   Class: " + case img.class_type
-                            when Magick::DirectClass
-                                "DirectClass"
-                            when Magick::PseudoClass
-                                "PseudoClass"
-                        end
-    puts "   Depth: #{img.depth} bits-per-pixel"
 
     @img_view = img
 
@@ -478,14 +493,13 @@ asdsda
   #Distance between RGB in same position in two images 
   def distance_diference
 
-    ##@img_filename = "book2_blue_no_table.jpg"
-    ##@img2_filename = "book2_green_no_table.jpg"
+    @img_filename = "book4_no_table.jpg"
+    @img2_filename = "net_book5.jpg"
     
-    @img_filename = params[:compare][0]
-    @img2_filename = params[:compare][1]
 
-    s = SSIM.new("Paulo","Lima")
-    asdkmdakjsdljk
+    #@img_filename = params[:compare][0]
+    #@img2_filename = params[:compare][1]
+
     img = Magick::Image::read("/home/frakinho/image_manipulation/server_serial_port/app/assets/images/#{@img_filename}").first
     i2g = Magick::Image::read("/home/frakinho/image_manipulation/server_serial_port/app/assets/images/#{@img2_filename}").first
 
@@ -503,26 +517,73 @@ asdsda
 
     @total_dif = 0
 
-    img.each_pixel do |pixel,column,row|
-      red_dif   = (pixel.red - i2g.pixel_color(column,row).red)     
-      green_dif = (pixel.green - i2g.pixel_color(column,row).green) 
-      blue_dif  = (pixel.blue - i2g.pixel_color(column,row).blue)   
 
 
-      dif = Math.sqrt(red_dif*red_dif + green_dif*green_dif + blue_dif*blue_dif)
-      @total_dif = @total_dif + dif
+    RMSE(img,i2g,1)
 
-      if @max_dif < dif
-        @max_dif = dif
-      end 
 
-      if @min_dif > dif
-        @min_dif = dif
-      end
+    lkadsjkdjklasdjkl
+    return avg
+
+  end
+
+  def RMSE(img_1,img_2,channel)
+    sum_red   = 0
+    sum_green = 0
+    sum_blue  = 0
+
+    img_max_red   = 0
+    img_min_red   = 2**img_1.depth
+    img_max_green = 0
+    img_min_green = 2**img_1.depth
+    img_max_blue  = 0
+    img_min_blue  = 2**img_1.depth
+
+    img_1.each_pixel do |pixel,column,row|
+      #sum = sum + (img(column,row,"red"))
+      sum_red   = sum_red   + (((img_1.pixel_color(column,row).red   - img_2.pixel_color(column,row).red  )**2))
+      img_max_red = change_max_value(img_max_red,img_1.pixel_color(column,row).red)
+      img_min_red = change_min_value(img_min_red,img_1.pixel_color(column,row).red)
+      img_max_red = change_max_value(img_max_red,img_2.pixel_color(column,row).red)
+      img_min_red = change_min_value(img_min_red,img_2.pixel_color(column,row).red)
+
+
+      sum_green = sum_green + (((img_1.pixel_color(column,row).green - img_2.pixel_color(column,row).green)**2))
+      #Image 1
+      img_max_green = change_max_value(img_max_green,img_1.pixel_color(column,row).green)
+      img_min_green = change_min_value(img_min_green,img_1.pixel_color(column,row).green)
+      #Ima 2 find max and min value in both 
+      img_max_green = change_max_value(img_max_green,img_2.pixel_color(column,row).green)
+      img_min_green = change_min_value(img_min_green,img_2.pixel_color(column,row).green)
+
+
+      sum_blue  = sum_blue  + (((img_1.pixel_color(column,row).blue  - img_2.pixel_color(column,row).blue )**2))
+      img_max_blue = change_max_value(img_max_blue,img_1.pixel_color(column,row).blue)
+      img_min_blue = change_min_value(img_min_blue,img_1.pixel_color(column,row).blue)
+      img_max_blue = change_max_value(img_max_blue,img_2.pixel_color(column,row).blue)
+      img_min_blue = change_min_value(img_min_blue,img_2.pixel_color(column,row).blue)
+
     end
+    
+    value = (Math.sqrt(sum_red) / (img_max_red - img_min_red)) + (Math.sqrt(sum_green) / (img_max_green - img_min_green)) + (Math.sqrt(sum_blue) / (img_max_blue - img_min_blue))    
 
-    kljlaksdljka
+  end
 
+  def change_max_value(old_value,value_to_compare)
+    if old_value < value_to_compare
+      return value_to_compare
+    else 
+      return old_value
+    end
+  end
+
+
+  def change_min_value(old_value,value_to_compare)
+    if old_value > value_to_compare
+      return value_to_compare
+    else 
+      return old_value
+    end
   end
 
 end
