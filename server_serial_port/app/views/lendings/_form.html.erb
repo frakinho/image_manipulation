@@ -11,28 +11,81 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :user_id %><br>
-    <%= f.number_field :user_id %>
-  </div>
-  <div class="field">
-    <%= f.label :book_id %><br>
-    <%= f.collection_select(:book_id,@all_books,:id,:title, :include_blank => 'Escolha uma opção') %>
 
+<div class="row">
+  <div class="col-xs-6 col-md-4">
+
+    <div class="panel panel-default">
+      <div class="panel-heading">Empréstimo</div>
+      <div class="panel-body">
+          <div class="field">
+            <%= f.label :book_id %>: <%= link_to @lending.book.title,book_path(@lending.book) %><br>
+            <%= f.number_field :book_id, :class => "form-control" %>
+          </div>
+          <div class="field">
+            <%= f.label :user_id %><br>
+            <%= f.number_field :user_id, :class => "form-control" %>
+          </div>
+          <div class="field">
+            <%= f.label :size_width %> (cm)<br>
+            <%= f.text_field :size_width, :class => "form-control"%>
+          </div>
+          <div class="field">
+            <%= f.label :size_height %> (cm)<br>
+            <%= f.text_field :size_height, :class => "form-control" %>
+          </div>
+          <div class="field">
+            <%= f.label :weight %> (kg)<br>
+            <%= f.text_field :weight, :class => "form-control" %>
+          </div>
+          <div class="field">
+            <%= f.label :ssim %><br>
+            <%= f.text_field :ssim, :class => "form-control" %>
+          </div>
+          <div class="field">
+            <%= f.label :rmse %><br>
+            <%= f.text_field :rmse, :class => "form-control" %>
+          </div>
+          <div class="field">
+          Image: <%= image_tag @lending.image.url(:thumb) %>
+          </div>
+          <div class="actions">
+            <%= f.submit %>
+          </div>
+      </div>
+    </div>
   </div>
-  <div class="field">
-    <%= f.label :size_widht %><br>
-    <%= f.text_field :size_widht %>
+
+
+  <div class="col-xs-6 col-md-4">
+
+    <div class="panel panel-default">
+      <div class="panel-heading">Livro</div>
+      <div class="panel-body">
+          <div class="field">
+            <strong> Título: </strong><%= @lending.book.title %> 
+          </div>
+          <div class="field">
+            <strong> Weight: </strong><%= @lending.book.weight %> kg
+          </div>
+          <div class="field">
+            <strong> Wigth: </strong><%= @lending.book.size_width %> cm
+          </div>
+          <div class="field">
+            <strong> Height: </strong><%= @lending.book.size_height %> cm
+          </div>
+          <div class="field">
+            <strong> Image: </strong><%= image_tag @lending.book.image.url(:thumb) %>
+          </div>
+
+      </div>
+    </div>
   </div>
-  <div class="field">
-    <%= f.label :size_height %><br>
-    <%= f.text_field :size_height %>
-  </div>
-  <div class="field">
-    <%= f.label :weight %><br>
-    <%= f.text_field :weight %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+
+</div>
+
+
+
+
+
 <% end %>

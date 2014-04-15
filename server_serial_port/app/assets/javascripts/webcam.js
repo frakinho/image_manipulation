@@ -348,7 +348,7 @@ var Webcam = {
     return taBytes;
   },
   
-  upload: function(image_data_uri, target_url, callback) {
+  upload: function(image_data_uri, target_url,book_id,weight, callback) {
     // submit image data to server using binary AJAX
     if (callback) Webcam.on('uploadComplete', callback);
     var form_elem_name = 'image';
@@ -390,8 +390,10 @@ var Webcam = {
     var form = new FormData();
     form.append( form_elem_name, blob, form_elem_name+"."+image_fmt.replace(/e/, '') );
 
-    alert(form);
-    
+    var tags;
+    tags = {"book_id": book_id, "weight": weight};
+
+    form.append( 'tags',JSON.stringify(tags))
     // send data to server
     http.send(form);
   }

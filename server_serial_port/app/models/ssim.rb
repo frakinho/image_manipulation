@@ -53,11 +53,34 @@ class SSIM
     	return pixel_array
     end
 
+    ###############
+    ### GET array from image file
+    ###############
+    def get_array_from_image(img)
+        pixel_array = []
+        img.each_pixel do |pixel,column,row|
+            #### All channel contain the same value
+            pixel_array.push((pixel.red / 257.0))
+        end
+
+        pixel_array = pixel_array.each_slice(img.columns).to_a
+
+    end
+
 
     #############
     #### PROCESSING IMAGE AND CALCULATE SSIM
     #############
     def image_processing(filename_1,filename_2)
+        #img = Magick::Image::read(filename_1)[0]
+        #img = img.resize(150, 216)
+        #img = img.quantize(256, Magick::GRAYColorspace)
+
+        #i2g = Magick::Image::read(filename_2)[0]
+        #i2g = img.resize(150, 216)
+        #i2g = img.quantize(256, Magick::GRAYColorspace)
+
+
     	pixel_array_img1 = read_file_image(filename_1)
     	pixel_array_img2 = read_file_image(filename_2)
 
@@ -115,6 +138,8 @@ class SSIM
 	    index = division_and_average(num_ssim,den_ssim)
 
 	    puts index
+
+        return index
 
     end
 

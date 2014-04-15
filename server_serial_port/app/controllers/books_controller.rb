@@ -1,5 +1,6 @@
 class BooksController < ApplicationController
   before_action :set_book, only: [:show, :edit, :update, :destroy]
+  skip_before_filter :verify_authenticity_token, :only => [:get_url_image]
 
   def search
     if params[:weight]
@@ -42,16 +43,14 @@ class BooksController < ApplicationController
   # GET /books/1
   # GET /books/1.json
   def show
-    img = Image_Similarity.new
-
-    img.size_calculation
-    img.hist_color_diference
   end
 
   # GET /books/new
   def new
     @book = Book.new
-    @book.weight = params[:weight].to_f
+    if !params[:weight].nil?
+      @book.weight = params[:weight].to_f
+    end
   end
 
   # GET /books/1/edit
@@ -62,7 +61,6 @@ class BooksController < ApplicationController
   # POST /books.json
   def create
     @book = Book.new(book_params)
-
     respond_to do |format|
       if @book.save
         format.html { redirect_to @book, notice: 'Book was successfully created.' }
@@ -98,6 +96,17 @@ class BooksController < ApplicationController
     end
   end
 
+  def get_url_image
+    book_id = params[:book_id]
+    @book = Book.find(book_id)
+    image_url = {'image' => @book.image.url(:thumb)}
+
+    respond_to do |format|
+      format.json { render json: image_url }
+    end
+
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_book
@@ -106,6 +115,6 @@ class BooksController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def book_params
-      params.require(:book).permit(:barcode, :weight, :title, :other_weight).permit(:image)
+      params.require(:book).permit(:barcode, :weight, :title, :other_weight,:size_width,:size_height,:image)
     end
 end

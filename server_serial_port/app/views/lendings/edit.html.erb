@@ -1,6 +1,33 @@
-<h1>Editing lending</h1>
+<% if @lending.security_value == -1 %>
+  <div class="security_red_background">
+<% else %>
+  <div class="security_green_background">
+<% end %>
+  <h1>Editing lending</h1>
 
-<%= render 'form' %>
+  <div class="progress progress-striped active">
+    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: <%= @size_perc%>%">
+      <span class="">Certeza do tamanho do livro: <%= @size_perc.round(2) %>% </span>
+    </div>
+  </div>
+  <div class="progress progress-striped active">
+    <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: <%= @weight_perc %>%">
+      <span class="">Certeza no peso do livro: <%= @weight_perc.round(2) %>% </span>
+    </div>
+  </div>
+  <div class="progress progress-striped active">
+    <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
+      <span class="">60% Complete (warning)</span>
+    </div>
+  </div>
+  <div class="progress progress-striped active">
+    <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
+      <span class="">80% Complete (danger)</span>
+    </div>
+  </div>
 
-<%= link_to 'Show', @lending %> |
-<%= link_to 'Back', lendings_path %>
+  <%= render 'form' %>
+
+  <%= link_to 'Show', @lending %> |
+  <%= link_to 'Back', lendings_path %>
+</div>

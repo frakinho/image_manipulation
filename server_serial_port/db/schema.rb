@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140409145405) do
+ActiveRecord::Schema.define(version: 20140415140705) do
 
   create_table "books", force: true do |t|
     t.string   "barcode"
@@ -24,12 +24,14 @@ ActiveRecord::Schema.define(version: 20140409145405) do
     t.string   "image_content_type"
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
+    t.float    "size_width"
+    t.float    "size_height"
   end
 
   create_table "lendings", force: true do |t|
     t.integer  "user_id"
     t.integer  "book_id"
-    t.float    "size_widht"
+    t.float    "size_width"
     t.float    "size_height"
     t.float    "weight"
     t.datetime "created_at"
@@ -38,6 +40,9 @@ ActiveRecord::Schema.define(version: 20140409145405) do
     t.string   "image_content_type"
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
+    t.float    "ssim"
+    t.float    "rmse"
+    t.float    "security_value"
   end
 
 end

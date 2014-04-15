@@ -38,8 +38,8 @@ gem "binding_of_caller"
 
 gem 'twitter-bootstrap-rails'
 
-gem 'rmagick'
-
+gem 'rmagick', :require => false
+		
 #Upload photo to book register
 gem "paperclip", "~> 4.1"
 

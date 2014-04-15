@@ -1,27 +1,33 @@
 <h1>Listing lendings</h1>
 
-<table>
+<table class="table">
   <thead>
     <tr>
+      <th>Image</th>
       <th>User</th>
       <th>Book</th>
       <th>Size widht</th>
       <th>Size height</th>
       <th>Weight</th>
-      <th></th>
-      <th></th>
-      <th></th>
+      <th>SSIM</th>
+      <th>RMSE</th>
+      <th>Show</th>
+      <th>Edit</th>
+      <th>Destroy</th>
     </tr>
   </thead>
 
   <tbody>
     <% @lendings.each do |lending| %>
       <tr>
+        <td><%= image_tag lending.image.url(:thumb) %></td>
         <td><%= lending.user_id %></td>
         <td><%= lending.book_id %></td>
-        <td><%= lending.size_widht %></td>
+        <td><%= lending.size_width %></td>
         <td><%= lending.size_height %></td>
         <td><%= lending.weight %></td>
+        <td><%= lending.ssim %></td>
+        <td><%= lending.rmse %></td>
         <td><%= link_to 'Show', lending %></td>
         <td><%= link_to 'Edit', edit_lending_path(lending) %></td>
         <td><%= link_to 'Destroy', lending, method: :delete, data: { confirm: 'Are you sure?' } %></td>

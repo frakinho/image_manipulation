@@ -29,4 +29,5 @@ ServerSerialPort::Application.configure do
   # Debug option
   config.my_app.debug = true
 
+
 end

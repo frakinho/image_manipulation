@@ -11,23 +11,46 @@
     </div>
   <% end %>
 
-  <div class="control-group">
-    <%= f.label :barcode ,:class=>"control-label"%><br>
-    <%= f.text_field :barcode, :class=>"form-control" %>
+  <div class="row">
+  <div class="col-xs-6 col-md-4">
+
+    <div class="panel panel-default">
+      <div class="panel-heading">Empréstimo</div>
+      <div class="panel-body">
+      
+        <p style="control-group">
+            <%= f.label :image, "Imagem" %><br />
+            <%= f.file_field :image %>
+          </p>
+        <div class="control-group">
+          <%= f.label :barcode ,:class=>"control-label"%><br>
+          <%= f.text_field :barcode, :class=>"form-control" %>
+        </div>
+        <div class="control-group">
+          <%= f.label :weight ,:class=>"control-label"%><br>
+          <%= f.text_field :weight, :class=>"form-control" %>
+        </div>
+        <div class="control-group">
+          <%= f.label :other_weight ,:class=>"control-label"%><br>
+          <%= f.text_field :other_weight, :class=>"form-control" %>
+        </div>
+        <div class="control-group">
+          <%= f.label :size_width ,:class=>"control-label"%><br>
+          <%= f.text_field :size_width, :class=>"form-control" %>
+        </div>
+        <div class="control-group">
+          <%= f.label :size_height ,:class=>"control-label"%><br>
+          <%= f.text_field :size_height, :class=>"form-control" %>
+        </div>
+        <div class="control-group">
+          <%= f.label :title ,:class=>"control-label"%><br>
+          <%= f.text_field :title, :class=>"form-control" %>
+        </div>
+        <div class="form-actions">
+          <%= f.submit "Create", :class=>"btn btn-primary" %>
+        </div>
+      <% end %>
+      </div>
+    </div>
   </div>
-  <div class="control-group">
-    <%= f.label :weight ,:class=>"control-label"%><br>
-    <%= f.text_field :weight, :class=>"form-control" %>
-  </div>
-  <div class="control-group">
-    <%= f.label :other_weight ,:class=>"control-label"%><br>
-    <%= f.text_field :other_weight, :class=>"form-control" %>
-  </div>
-  <div class="control-group">
-    <%= f.label :title ,:class=>"control-label"%><br>
-    <%= f.text_field :title, :class=>"form-control" %>
-  </div>
-  <div class="form-actions">
-    <%= f.submit "Create", :class=>"btn btn-primary" %>
-  </div>
-<% end %>
+</div>

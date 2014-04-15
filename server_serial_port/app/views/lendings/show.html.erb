@@ -1,6 +1,11 @@
 <p id="notice"><%= notice %></p>
 
 <p>
+  <strong>Photo:</strong>
+  <%= image_tag @lending.image.url(:medium) %>
+</p>
+
+<p>
   <strong>User:</strong>
   <%= @lending.user_id %>
 </p>
@@ -12,7 +17,7 @@
 
 <p>
   <strong>Size widht:</strong>
-  <%= @lending.size_widht %>
+  <%= @lending.size_width %>
 </p>
 
 <p>

@@ -1,6 +1,22 @@
-<br>
-<br>
-<br>
-<div id="value_balance">
-	<%= render partial: 'dynamic'  %>
-</div>
+<table class="table">
+	<tr>
+		<th>Peso</th>
+		<th>Imagem</th>
+		<th>Livro</th>
+	</tr>
+	<tr>
+		<td><div id="value_balance"><%= render partial: 'dynamic'  %></div></td>
+		<td><div id="my_camera" style="width:640px; height:480px;"></div></td>
+		<td><%= collection_select(:book, :book_id, @books, :id, :title,{},{:onchange => "select_book_event()"}) %><br><img id="image_select_box" src="assets/no_image.svg" alt="..." class="img-thumbnail"></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td align="center"><button onclick="take_snapshot()" class="btn btn-primary btn-lg btn-block">Empréstimo</button></td>
+		<td></td>
+	</tr>
+</table>
+
+<script>
+	Webcam.attach( '#my_camera' );
+</script>
+

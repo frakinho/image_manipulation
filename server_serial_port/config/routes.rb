@@ -19,9 +19,11 @@ ServerSerialPort::Application.routes.draw do
 
   get "refresh_header" => "welcome#refresh_header"
 
-  post "processing_upload" => "image#processing_upload"
+  post "lendings/init_lending" => "lendings#init_lending"
 
   get 'search',  to: 'books#search', as: :search
+
+  get 'get_url_image' => 'books#get_url_image'
 
   
 

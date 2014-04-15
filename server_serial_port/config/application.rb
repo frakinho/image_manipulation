@@ -15,8 +15,7 @@ module ServerSerialPort
     config.assets.paths << "#{Rails}/vendor/assets/fonts"
 
     # Add variable to DEBUG 
-    config.my_app = ActiveSupport::OrderedOptions.new
-    
+    config.my_app = ActiveSupport::OrderedOptions.new    
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
