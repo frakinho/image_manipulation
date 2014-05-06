@@ -45,6 +45,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.7.0)
+    daemons (1.1.9)
     debug_inspector (0.0.2)
     em-websocket (0.5.0)
       eventmachine (>= 0.12.9)
@@ -108,6 +109,10 @@ GEM
       activesupport (>= 3.0)
       sprockets (~> 2.8)
     sqlite3 (1.3.8)
+    thin (1.6.2)
+      daemons (>= 1.0.9)
+      eventmachine (>= 1.0.0)
+      rack (>= 1.0.0)
     thor (0.18.1)
     thread_safe (0.2.0)
       atomic (>= 1.1.7, < 2)
@@ -144,6 +149,7 @@ DEPENDENCIES
   sass-rails (~> 4.0.0)
   serialport
   sqlite3
+  thin
   turbolinks
   twitter-bootstrap-rails
   uglifier (>= 1.3.0)

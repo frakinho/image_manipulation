@@ -5,3 +5,13 @@
 .security_green_background .panel-body{
 	background-color: #EBFFE8;
 }
+
+.security_green_background {
+	padding-left: 50px;
+	padding-right: 50px;
+}
+
+.security_red_background {
+	padding-left: 50px;
+	padding-right: 50px;
+}

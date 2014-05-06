@@ -43,6 +43,9 @@ gem 'rmagick', :require => false
 #Upload photo to book register
 gem "paperclip", "~> 4.1"
 
+gem "thin"
+
+
 # SSIM Algorithm
 
 

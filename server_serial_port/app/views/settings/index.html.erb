@@ -1,0 +1,41 @@
+<h1>Listing settings</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>In Use</th>
+      <th>Description</th>
+      <th>Debug</th>
+      <th>Min_value</th>
+      <th>Security level</th>
+      <th>Size</th>
+      <th>Similarity</th>
+      <th>Weight</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @settings.each do |setting| %>
+      <tr>
+        <td><%= setting.in_use %>
+        <td><%= setting.description %>
+        <td><%= setting.debug %></td>
+        <td><%= setting.min_value %></td>
+        <td><%= setting.security_level %></td>
+        <td><%= setting.size %></td>
+        <td><%= setting.similarity %></td>
+        <td><%= setting.weight %></td>
+        <td><%= link_to 'Show', setting %></td>
+        <td><%= link_to 'Edit', edit_setting_path(setting) %></td>
+        <td><%= link_to 'Destroy', setting, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Setting', new_setting_path %>

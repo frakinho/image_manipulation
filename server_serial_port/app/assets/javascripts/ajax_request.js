@@ -6,7 +6,7 @@ ready = function() {
 
   function refresh_header(){
     $.ajax({
-      url: "refresh_header",
+      url: "http://localhost:3000/refresh_header",
       type: "GET",
       async: true,
       success: function(result){

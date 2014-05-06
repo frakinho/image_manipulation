@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  debug: false
+  security_level: 1.5
+  size_height: 1.5
+  size_width: 1.5
+  weight: 1.5
+
+two:
+  debug: false
+  security_level: 1.5
+  size_height: 1.5
+  size_width: 1.5
+  weight: 1.5

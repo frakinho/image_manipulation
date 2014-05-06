@@ -27,7 +27,7 @@ class BooksController < ApplicationController
   # GET /books
   # GET /books.json
   def index
-    @books = Book.first(25)
+    @books = Book.first(10)
     @all_books = Book.all.count
 
     i = 0

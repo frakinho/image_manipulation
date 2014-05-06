@@ -1,4 +1,6 @@
 ServerSerialPort::Application.routes.draw do
+  resources :settings
+
   resources :lendings
 
   get "image/load"
@@ -24,6 +26,8 @@ ServerSerialPort::Application.routes.draw do
   get 'search',  to: 'books#search', as: :search
 
   get 'get_url_image' => 'books#get_url_image'
+
+  post 'koha_request' => 'lendings#koha_request'
 
   
 

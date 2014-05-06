@@ -7,7 +7,7 @@
 
   <%= csrf_meta_tags %>
 </head>
-<body text-align="center">
+<body text-align="center" >
 
 
 <nav class="navbar navbar-default" role="navigation">
@@ -30,13 +30,13 @@
         <li><a href="<%= lendings_path %>">Empréstimos</a></li>
         <li><a href="#">Link</a></li>
         <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Configuraçõe <b class="caret"></b></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Configurações <b class="caret"></b></a>
           <ul class="dropdown-menu">
             <li><a href="#">Debug</a></li>
             <li><a href="#">Another action</a></li>
             <li><a href="#">Something else here</a></li>
             <li class="divider"></li>
-            <li><a href="#">Separated link</a></li>
+            <li><a href="<%= settings_path %>">Index</a></li>
             <li class="divider"></li>
             <li><a href="#">One more separated link</a></li>
           </ul>
@@ -64,7 +64,6 @@
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
-
 
 <%= yield %>
 

@@ -9,7 +9,6 @@
       <th>ID</th>
       <th>Weight</th>
       <th>Other Weight</th>
-      <th>Difference</th>
       <th>Title</th>
       <th></th>
       <th></th>
@@ -25,7 +24,6 @@
         <td><%= book.id %></td>
         <td><%= book.weight %></td>
         <td><%= book.other_weight %></td>
-        <td><%= (book.weight - book.other_weight).round(3) %>
         <td><%= book.title %></td>
         <td><%= link_to 'Show', book ,:class=>"btn btn-success"%></td>
         <td><%= link_to 'Edit', edit_book_path(book), :class=>"btn btn-info"%></td>

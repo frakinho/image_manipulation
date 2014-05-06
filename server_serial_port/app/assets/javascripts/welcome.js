@@ -1,3 +1,13 @@
+window.onload=function(){
+	var iDiv = document.createElement('div');
+	iDiv.id = 'my_camera';
+	iDiv.className = 'my_camera';
+
+	
+
+};
+
+
 
 //Change photo why new book is select from combobox
 function select_book_event() {
@@ -25,21 +35,19 @@ function take_snapshot() {
 	//document.getElementById('my_result').innerHTML = '<img src="'+data_uri+'"/>';
 
 	var book_id = document.getElementById('book_book_id').value;
-	var weight  = document.getElementById('read_value').innerHTML;
-	
+	//var weight  = document.getElementById('read_value').innerHTML;
+	var weight = 10;
 	alert("Peso: " + weight + " Book_id: " + book_id);
 
-	Webcam.upload( data_uri, "http://localhost:3000/lendings/init_lending",book_id,weight, function(code, text) {
+	Webcam.upload( data_uri, "https://localhost:3001/lendings/init_lending",book_id,weight, function(code, text) {
 		//
 		if(code == 200) {
 			var json_image_object = JSON.parse(text);
 
-			window.location.href = "http://localhost:3000/lendings/"+json_image_object.id+"/edit";
+			window.location.href = "https://localhost:3001/lendings/"+json_image_object.id+"/edit";
 		} else {
 			alert("Erro no UPLOAD da imagem");
 		}
 		
-		  
-
 	} );
 }

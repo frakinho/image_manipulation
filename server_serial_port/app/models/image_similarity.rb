@@ -280,6 +280,8 @@ class Image_Similarity
 		img_1 = image_resize(img_1)
 	    img_2 = image_resize(img_2)
 	    
+	    img_1 = img_1.auto_gamma_channel(AllChannels)
+	    img_2 = img_2.auto_gamma_channel(AllChannels)
 
 	    puts "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
 
@@ -293,7 +295,8 @@ class Image_Similarity
 	    puts " #{array[1]}"
 	    puts " #{array[2]}"
 
-	    return array[1]
+	    #1 is the same image - 0 is totaly differente
+	    return (1 - (array[0] / 30509.92))
 
 	    #sum_red   = 0
 	    #sum_green = 0

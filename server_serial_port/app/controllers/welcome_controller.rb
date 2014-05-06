@@ -1,4 +1,11 @@
-$global_variable = SerialPort.new("/dev/tty.usbmodem1421", 9600, 8, 1, SerialPort::NONE)
+begin
+	$global_variable = SerialPort.new("/dev/tty.usbmodem1421", 9600, 8, 1, SerialPort::NONE)
+	puts "\n\n\n\n\n\n\n ****************************************** AQUI **************************\n\n\n\n\n\n\n"
+rescue => e
+	$global_variable = SerialPort.new("/dev/tty.usbmodem1411", 9600, 8, 1, SerialPort::NONE)
+	puts "\n\n\n\n\n\n\n ****************************************** AQUI **************************\n\n\n\n\n\n\n"
+end
+
 class WelcomeController < ActionController::Base
 	layout "application"
 	
@@ -6,6 +13,7 @@ class WelcomeController < ActionController::Base
 
 	def index
 	    @books = Book.take(21)
+	    @setting = Setting.where(:in_use => true)[0]
 
 	end
 
@@ -20,7 +28,8 @@ class WelcomeController < ActionController::Base
 		sp = $global_variable 
 		@read_value = sp.gets.chomp
 		puts @read_value
-	    
+	    bol = sp.flush_input
+	    puts "Valor do FLUSH => #{bol}"
 		render :partial => 'welcome/dynamic', :locals => {:partil_value => @read_value}
 	end
 

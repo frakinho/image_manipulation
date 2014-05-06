@@ -5,6 +5,7 @@ class Lending < ActiveRecord::Base
 	validates_attachment_content_type :image, :content_type => ["image/jpg", "image/jpeg", "image/png"]
 
 	belongs_to :book
+	belongs_to :setting
 
 	def calculate_error_size
 
@@ -28,6 +29,38 @@ class Lending < ActiveRecord::Base
 			weight_perc = ((self.weight - book.weight).abs * 100) / book.weight
 			return (100 - weight_perc)
 		end
+
+	end
+
+	###############
+	######## LENDING OR NOT LENDING
+	def lending_calculation
+		setting = Setting.where(:in_use => true)[0]
+
+		##
+		weight_error = calculate_error_weight / 100
+		size_error   = calculate_error_size   / 100
+		
+		self.setting_id = setting.id
+		self.weight_error = weight_error
+		self.size_error   = size_error
+
+		if weight_error < setting.min_value || size_error < setting.min_value || self.rmse < setting.min_value
+			return false
+		end
+
+
+		size   = size_error * setting.size
+		weight = weight_error *  setting.weight
+		rmse   = self.rmse * setting.similarity
+
+		total = size + weight + rmse
+ 
+		if total < setting.security_level
+			return false
+		else
+			return true
+		end  
 
 	end
 

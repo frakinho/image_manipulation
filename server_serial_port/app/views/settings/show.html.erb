@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Debug:</strong>
+  <%= @setting.debug %>
+</p>
+
+<p>
+  <strong>Security level:</strong>
+  <%= @setting.security_level %>
+</p>
+
+<p>
+  <strong>Min Value:</strong>
+  <%= @setting.min_value %>
+</p>
+
+<p>
+  <strong>Security level:</strong>
+  <%= @setting.security_level %>
+</p>
+
+<p>
+  <strong>Size:</strong>
+  <%= @setting.size %>
+</p>
+
+<p>
+  <strong>Similarity:</strong>
+  <%= @setting.similarity %>
+</p>
+
+<p>
+  <strong>Weight:</strong>
+  <%= @setting.weight %>
+</p>
+
+<%= link_to 'Edit', edit_setting_path(@setting) %> |
+<%= link_to 'Back', settings_path %>
