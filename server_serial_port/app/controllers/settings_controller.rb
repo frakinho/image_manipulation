@@ -5,8 +5,12 @@ class SettingsController < ApplicationController
   # GET /settings.json
   def index
     @settings = Setting.all
-    value = `imagesnap -l`
-    @cameras = value.split("\n")
+    if ServerSerialPort::Application.config.PLATFORM == 1
+      value = `imagesnap -l`
+      @cameras = value.split("\n")
+    end
+
+    @camera = "/dev/video0"
     
   end
 
@@ -62,7 +66,7 @@ class SettingsController < ApplicationController
 
     puts "CAMERA: #{camera}"
 
-    
+
     ServerSerialPort::Application.config.my_app.camera = camera
     if ServerSerialPort::Application.config.my_app.camera.nil?
       json_text = {:success => 'false'}.to_json

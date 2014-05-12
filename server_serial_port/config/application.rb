@@ -19,9 +19,10 @@ module ServerSerialPort
 
     if RUBY_PLATFORM.include? "linux"
         puts "Linux Operating SYSTEM"
+        config.PLATFORM = 1
     elsif RUBY_PLATFORM.include? "darwin"
         puts "MAC OS"
-
+        config.PLATFORM = 2
         value = `imagesnap -l`
 
         array = value.split("\n")
