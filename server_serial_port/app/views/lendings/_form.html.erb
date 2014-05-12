@@ -19,7 +19,7 @@
       <div class="panel-heading">Empréstimo</div>
       <div class="panel-body">
           <div class="field">
-            <%= f.label :book_id %>: <%= link_to @lending.book.title,book_path(@lending.book) %><br>
+            <%= f.label :book_id %>: <% if book %><%= link_to @lending.book.title,book_path(@lending.book) %><% end %><br>
             <%= f.number_field :book_id, :class => "form-control" %>
           </div>
           <div class="field">
