@@ -108,8 +108,13 @@ class LendingsController < ApplicationController
     
     begin
       $global_variable = SerialPort.new("/dev/tty.usbmodem1421", 9600, 8, 1, SerialPort::NONE)
+      puts "\n\n\n\n\n\n\n ****************************************** AQUI **************************\n\n\n\n\n\n\n"
     rescue => e
-      $global_variable = SerialPort.new("/dev/tty.usbmodem1411", 9600, 8, 1, SerialPort::NONE)
+      begin 
+        $global_variable = SerialPort.new("/dev/tty.usbmodem1411", 9600, 8, 1, SerialPort::NONE)
+      rescue => fl
+        puts "\n\n\n\n\n\n\n ****************************************** ERRROR **************************\n\n\n\n\n\n\n"
+      end
     end
 
     sp = $global_variable 
@@ -177,42 +182,6 @@ class LendingsController < ApplicationController
       format.html { render action: 'new' }
       format.json { render json: "Teste", status: :unprocessable_entity }
     end
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     #puts "========> #{params["barcode"]}"
