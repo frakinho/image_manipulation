@@ -18,8 +18,9 @@
     <div class="panel panel-default">
       <div class="panel-heading">Empréstimo</div>
       <div class="panel-body">
+        <% if !@lending.book.nil? %>
           <div class="field">
-            <%= f.label :book_id %>: <% if !@lending.book.nil? %><%= link_to @lending.book.title,book_path(@lending.book) %><% end %><br>
+            <%= f.label :book_id %>: <%= link_to @lending.book.title,book_path(@lending.book) %><br>
             <%= f.number_field :book_id, :class => "form-control" %>
           </div>
           <div class="field">
@@ -52,6 +53,7 @@
           <div class="actions">
             <%= f.submit %>
           </div>
+        <% end %>
       </div>
     </div>
   </div>
