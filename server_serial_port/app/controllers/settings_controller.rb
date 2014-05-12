@@ -5,7 +5,8 @@ class SettingsController < ApplicationController
   # GET /settings.json
   def index
     @settings = Setting.all
-    if ServerSerialPort::Application.config.PLATFORM == 1
+    #IF the system platform is MAC OS X
+    if ServerSerialPort::Application.config.PLATFORM == 2
       value = `imagesnap -l`
       @cameras = value.split("\n")
     end
