@@ -20,6 +20,7 @@ module ServerSerialPort
     if RUBY_PLATFORM.include? "linux"
         puts "Linux Operating SYSTEM"
         config.PLATFORM = 1
+        config.my_app.camera = "/dev/video0"
     elsif RUBY_PLATFORM.include? "darwin"
         puts "MAC OS"
         config.PLATFORM = 2
@@ -28,7 +29,7 @@ module ServerSerialPort
         array = value.split("\n")
         camera = array.last
 
-        config.my_app.camera = "Teste para nada"
+        config.my_app.camera = camera
         puts "final: #{array.last}"
 
     else
