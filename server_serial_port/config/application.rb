@@ -15,7 +15,26 @@ module ServerSerialPort
     config.assets.paths << "#{Rails}/vendor/assets/fonts"
 
     # Add variable to DEBUG 
-    config.my_app = ActiveSupport::OrderedOptions.new    
+    config.my_app = ActiveSupport::OrderedOptions.new
+
+    if RUBY_PLATFORM.include? "linux"
+        puts "Linux Operating SYSTEM"
+    elsif RUBY_PLATFORM.include? "darwin"
+        puts "MAC OS"
+
+        value = `imagesnap -l`
+
+        array = value.split("\n")
+        camera = array.last
+
+        config.my_app.camera = "Teste para nada"
+        puts "final: #{array.last}"
+
+    else
+        
+    end
+
+    puts RUBY_PLATFORM    
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers

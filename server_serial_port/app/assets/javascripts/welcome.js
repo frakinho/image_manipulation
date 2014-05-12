@@ -7,12 +7,53 @@ window.onload=function(){
 
 };
 
+function select_camera_event() {
+
+	var combobox = document.getElementById('select_camera');
+	var select_option = combobox.options[combobox.selectedIndex].value;
+
+
+	$.ajax({
+	    type: "POST",
+	    url: "http://localhost:3000/change_camera",
+	    // The key needs to match your method's input parameter (case-sensitive).
+	    data: JSON.stringify({ camera: select_option }),
+	    contentType: "application/json; charset=utf-8",
+	    dataType: "json",
+	    success: function(data){
+	    	alert(data);
+	    },
+	    failure: function(errMsg) {
+	        alert(errMsg);
+	    }
+	});
+
+	/**
+	alert(select_option);
+	$.ajax({
+      url: "http://localhost:3000/change_camera?camera=" + select_option,
+      type: "GET",
+      async: true,
+      success: function(result){
+      	if(result.success) {
+        	alert("Result: " + result.success);
+      	}
+        else {
+        	alert("Result é mt error :)");
+        }
+
+      },
+      error: function(){
+        alert('Error occured');
+      }
+    });*/
+}
+
 
 
 //Change photo why new book is select from combobox
 function select_book_event() {
 	var book_id = document.getElementById('book_book_id').value
-
 
 	$.ajax({
       url: "get_url_image/?book_id=" + book_id,

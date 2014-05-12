@@ -45,7 +45,6 @@ gem "paperclip", "~> 4.1"
 
 gem "thin"
 
-
 # SSIM Algorithm
 
 

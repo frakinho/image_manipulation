@@ -19,15 +19,22 @@ ServerSerialPort::Application.routes.draw do
   # You can have the root of your site routed with "root"
   root 'welcome#index'
 
+  #Refresh_header is used to update weight
   get "refresh_header" => "welcome#refresh_header"
 
+  #request for new lending, this function is used in browser request
   post "lendings/init_lending" => "lendings#init_lending"
 
+  #Search route to search book by weight
   get 'search',  to: 'books#search', as: :search
 
+  #Get url image from selected book
   get 'get_url_image' => 'books#get_url_image'
 
+  #This route represent the koha request, this request is a POST with JSON request
   post 'koha_request' => 'lendings#koha_request'
+
+  post 'change_camera' => 'settings#change_camera'
 
   
 

@@ -126,7 +126,10 @@ class LendingsController < ApplicationController
     bol = sp.flush_input
     sp.close
 
-    system "imagesnap -d \"USB 2.0 Camera\""
+    var_system = "imagesnap -d #{ServerSerialPort::Application.config.my_app.camera}"
+
+    puts "Executei este: #{var_system}"
+    system "imagesnap -d \"#{ServerSerialPort::Application.config.my_app.camera}\""
     File.open("snapshot.jpg") do |file_image|
       @lending = Lending.new(:user_id => params["user_id"],:book_id => book.id,:weight => ((@read_value.to_f+@read_value1.to_f+@read_value2.to_f) / 4),:image => file_image)
     end #file gets closed automatically here

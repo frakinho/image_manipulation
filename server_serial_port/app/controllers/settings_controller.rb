@@ -5,6 +5,9 @@ class SettingsController < ApplicationController
   # GET /settings.json
   def index
     @settings = Setting.all
+    value = `imagesnap -l`
+    @cameras = value.split("\n")
+    
   end
 
   # GET /settings/1
@@ -49,6 +52,26 @@ class SettingsController < ApplicationController
         format.json { render json: @setting.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  # GET /change_camera?camera=NAME
+  def change_camera
+    puts params
+    camera = params["camera"]
+
+
+    puts "CAMERA: #{camera}"
+
+    
+    ServerSerialPort::Application.config.my_app.camera = camera
+    if ServerSerialPort::Application.config.my_app.camera.nil?
+      json_text = {:success => 'false'}.to_json
+    else
+      json_text = {:success => 'true'}.to_json
+    end
+
+    render :json => json_text
+
   end
 
   # DELETE /settings/1

@@ -1,5 +1,16 @@
 <h1>Listing settings</h1>
 
+Camera select: 
+<select id="select_camera" onchange="select_camera_event()">
+  <% @cameras.each do |camera| %>
+    <% if ServerSerialPort::Application.config.my_app.camera.include? camera %>
+      <option value="<%= camera %>" selected><%= camera %></option> 
+    <% else %>
+      <option value="<%= camera %>"><%= camera %></option> 
+    <% end %>
+  <% end %>
+</select>
+
 <table class="table">
   <thead>
     <tr>
