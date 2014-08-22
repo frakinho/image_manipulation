@@ -27,17 +27,9 @@ class BooksController < ApplicationController
   # GET /books
   # GET /books.json
   def index
-    @books = Book.first(10)
     @all_books = Book.all.count
+    @books = Book.paginate(:page => params[:page],:order => "created_at DESC")
 
-    i = 0
-    while i < 0 do
-      value =  ((Random.rand(1000)) / 1000.0).round(3)
-      i = i + 1
-      a = Book.new(:barcode => "Serie 10000",:weight => value,:other_weight => value,:title => "Teste#{i}")
-
-      a.save
-    end
   end
 
   # GET /books/1

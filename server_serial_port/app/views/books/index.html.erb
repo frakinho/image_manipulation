@@ -1,38 +1,48 @@
-<h1><%= @all_books %> Books</h1>
+<h1 style="text-align: center;">Books</h1>
 
-
-<table class="table">
-  <thead>
-    <tr>
-      <th>Image</th>
-      <th>Barcode</th>
-      <th>ID</th>
-      <th>Weight</th>
-      <th>Other Weight</th>
-      <th>Title</th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @books.each do |book| %>
+<div class="index">
+  <table class="table table-striped table-hover">
+    <thead>
       <tr>
-        <td><%= image_tag book.image.url(:medium) %></td>
-        <td><%= book.barcode %></td>
-        <td><%= book.id %></td>
-        <td><%= book.weight %></td>
-        <td><%= book.other_weight %></td>
-        <td><%= book.title %></td>
-        <td><%= link_to 'Show', book ,:class=>"btn btn-success"%></td>
-        <td><%= link_to 'Edit', edit_book_path(book), :class=>"btn btn-info"%></td>
-        <td><%= link_to 'Destroy', book, method: :delete, data: { confirm: 'Are you sure?' },:class=>"btn btn-danger" %></td>
+        <th>ID</th>
+        <th>Image</th>
+        <th>Barcode</th>
+        <th>Title</th>
+        <th>Weight</th>
+        <th>Other Weight</th>
+        <th></th>
+        <th></th>
+        <th></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
 
+    <tbody>
+      <% @books.each do |book| %>
+        <% begin %>
+          <tr>
+            <td><%= book.id %></td>
+            <td><div class="image_medium"><%= image_tag book.image.url(:medium) %></div></td>
+            <td><%= book.barcode %></td>
+            <td><%= book.title.force_encoding('UTF-8') if book.title %></td>
+            <td><%= book.weight.round(2) if book.weight %> kg</td>
+            <td><%= book.other_weight.round(2) if book.other_weight %> kg</td>
+            <td><%= link_to 'Edit', edit_book_path(book), :class=>"btn btn-info"%></td>
+            <td><%= link_to 'Show', book ,:class=>"btn btn-success"%></td>
+            <td><%= link_to 'Destroy', book, method: :delete, data: { confirm: 'Are you sure?' },:class=>"btn btn-danger" %></td>
+          </tr>
+        <% rescue ArgumentError => e  %>
+            <td><%= book.weight %> kg</td>
+            <td><%= book.other_weight %> kg</td>
+            <td><%= link_to 'Edit', edit_book_path(book), :class=>"btn btn-info"%></td>
+            <td><%= link_to 'Show', book ,:class=>"btn btn-success"%></td>
+            <td><%= link_to 'Destroy', book, method: :delete, data: { confirm: 'Are you sure?' },:class=>"btn btn-danger" %></td>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+</div>
 <br>
-
-<%= link_to 'New Book', new_book_path %>
+<div style="text-align:center;">
+  <%= link_to 'New Book', new_book_path %> <br>
+  <%= will_paginate @books, renderer: BootstrapPagination::Rails %>
+</div>

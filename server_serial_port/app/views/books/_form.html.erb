@@ -17,7 +17,9 @@
     <div class="panel panel-default">
       <div class="panel-heading">Empréstimo</div>
       <div class="panel-body">
-      
+        <p style="control-group">
+          <%= image_tag @book.image.url(:thumb) %>
+        </p>
         <p style="control-group">
             <%= f.label :image, "Imagem" %><br />
             <%= f.file_field :image %>

@@ -1,34 +1,67 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Photo:</strong>
-  <%= image_tag @lending.image.url(:medium) %>
-</p>
+<div class="index">
+  <div class="row">
+    <table class="table" width="70%">
+      <tr>
+        <th></th>
+        <th>Book</th>
+        <th width="20%" style="text-align:center;">Weight</th>
+        <th width="20%" style="text-align:center;">Size</th>
+        <th width="20%" style="text-align:center;">Image</th>
+      </tr>
+      <tr>
+        <td>Book</td>
+        <td><%= @lending.book.title %> </td>
+        <td style="text-align:center;"><%= @lending.book.weight %> kg</td>
+        <td style="text-align:center;"><%= (@lending.book.size_width).round(2) %>cm - <%= (@lending.book.size_height).round(2) %>cm</td>
+        <td style="text-align:center;"><%= image_tag(@lending.book.image.url(:thumb), :class => "image_lending") %></td>
+      </tr>
+      <tr>
+        <td>Lending</td>
+        <td><%= @lending.book.title %></td>
+        <td style="text-align:center;"><%= @lending.weight %> kg</td>
+        <td style="text-align:center;"><%= (@lending.size_width).round(2) %>cm - <%= (@lending.size_height).round(2) %>cm</td>
+        <td style="text-align:center;"><%= image_tag(@lending.image.url(:thumb),:class => "image_rotate") %></td>
+      </tr>
+      <tr>
+        <td> </td>
+        <td> - </td>
+        <td style="text-align:center;" >
+          <div class="progress progress-striped active">
+            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: <%= @lending.size_error.round(2) * 100 %>%">
+              <span class="">Certeza do tamanho do livro: <%= @lending.size_error.round(2) * 100 %>% </span>
+            </div>
+          </div>
+        </td>
+        <td style="text-align:center;">  
+          <div class="progress progress-striped active">
+            <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: <%= @lending.weight_error.round(2) * 100 %>%">
+              <span class="">Certeza no peso do livro: <%= @lending.weight_error.round(2) *100 %>% </span>
+            </div>
+          </div>
+        </td>
+        <td style="text-align:center;">
+          <div class="progress progress-striped active">
+            <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: <%= @lending.rmse.round(2) * 100 %>%">
+              <span class="">Certeza na similaridade: <%= @lending.rmse.round(2) * 100 %>% </span>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
 
-<p>
-  <strong>User:</strong>
-  <%= @lending.user_id %>
-</p>
+  <div class="row">
+    <div class="col-md-12" style="text-align:center">
+        <% if @lending.lending %>
+          <h1>Empréstimo</h1>
+        <% else %>
+          <h1>Não empréstimo</h1>
+        <% end %>
+        <%= link_to 'Back', lendings_path %>
 
-<p>
-  <strong>Book:</strong>
-  <%= @lending.book_id %>
-</p>
+    </div>
+  </div>
 
-<p>
-  <strong>Size widht:</strong>
-  <%= @lending.size_width %>
-</p>
-
-<p>
-  <strong>Size height:</strong>
-  <%= @lending.size_height %>
-</p>
-
-<p>
-  <strong>Weight:</strong>
-  <%= @lending.weight %>
-</p>
-
-<%= link_to 'Edit', edit_lending_path(@lending) %> |
-<%= link_to 'Back', lendings_path %>
+</div>

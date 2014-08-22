@@ -1,7 +1,8 @@
 class Book < ActiveRecord::Base
 	has_many :lendings
+	searchkick
 
-	has_attached_file :image, :styles => { :medium => "300x300>", :thumb => "100x100>" }, :default_url => "/images/:style/missing.png"	
+	has_attached_file :image, :styles => { :medium => "300x300>", :thumb => "100x100>" }, :default_url => ":style/no_image.png"	
 	validates_attachment_content_type :image, :content_type => ["image/jpg", "image/jpeg", "image/png"]
 
 

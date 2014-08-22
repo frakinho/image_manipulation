@@ -9,7 +9,7 @@ rescue => e
 	end
 end
 
-class WelcomeController < ActionController::Base
+class IndexController < ActionController::Base
 	layout "application"
 	
 	before_filter :set_variable
@@ -21,19 +21,23 @@ class WelcomeController < ActionController::Base
 	end
 
 	def reload_partial
-		render :partial => "welcome/dynamic"
+		render :partial => "index/dynamic"
 	end
 
 
 
 	def refresh_header
-		puts "Aqui ------"
-		sp = $global_variable 
-		@read_value = sp.gets.chomp
-		puts @read_value
-	    bol = sp.flush_input
-	    puts "Valor do FLUSH => #{bol}"
-		render :partial => 'welcome/dynamic', :locals => {:partil_value => @read_value}
+		if !$global_variable.nil?
+			puts "Aqui ------"
+			sp = $global_variable 
+			@read_value = sp.gets.chomp
+			puts @read_value
+		    bol = sp.flush_input
+		    puts "Valor do FLUSH => #{bol}"
+			render :partial => 'index/dynamic', :locals => {:partil_value => @read_value}
+		else
+			render :partial => 'index/dynamic', :locals => {:partil_value => 0}
+		end
 	end
 
 	def set_variable

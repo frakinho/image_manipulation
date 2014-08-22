@@ -3,7 +3,7 @@
   <title>ServerSerialPort</title>
   <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
   <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
-  <%= javascript_include_tag "welcome" %>
+  <%= javascript_include_tag "index" %>
 
   <%= csrf_meta_tags %>
 </head>
@@ -26,40 +26,34 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li><a href="<%= books_path %>">Livros</a></li>
-        <li><a href="<%= lendings_path %>">Empréstimos</a></li>
-        <li><a href="#">Link</a></li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Configurações <b class="caret"></b></a>
-          <ul class="dropdown-menu">
-            <li><a href="#">Debug</a></li>
-            <li><a href="#">Another action</a></li>
-            <li><a href="#">Something else here</a></li>
-            <li class="divider"></li>
-            <li><a href="<%= settings_path %>">Index</a></li>
-            <li class="divider"></li>
-            <li><a href="#">One more separated link</a></li>
-          </ul>
-        </li>
+        <li><a href="<%= books_path %>">Books</a></li>
+        <li><a href="<%= lendings_path %>">Lendings</a></li>
       </ul>
-      <form class="navbar-form navbar-left" role="search">
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="Search">
-        </div>
-        <button type="submit" class="btn btn-default">Submit</button>
-      </form>
+      <%= form_tag "/books", :method => "get",:class=>"navbar-form navbar-left input-group", style:"box-shadow: none; -webkit-box-shadow: none", :id => "search" do %>
+            <%= text_field_tag :search, params[:search],:class => "form-control typeahead" ,:style=>"border: 1px solid #dddddd; border-radius: 3px 3px 3px 3px; vertical-align: center; width:300px;",:autocomplete => "off",:id=>"search_query",:placeholder=>"O que procura?",:data => {:provide => "typeahead"}  %>
+            <input type="hidden" class="span1" name="IdControl" id="IdControl" value="" />
+      <% end %>
+
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#">Link</a></li>
         <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Settings <b class="caret"></b></a>
           <ul class="dropdown-menu">
-            <li><a href="#">Action</a></li>
-            <li><a href="#">Another action</a></li>
-            <li><a href="#">Something else here</a></li>
             <li class="divider"></li>
-            <li><a href="#">Separated link</a></li>
+            <li><a href="<%= settings_path %>">Settings</a></li>
+            <li class="divider"></li>
           </ul>
         </li>
+        <!--<li><a href="#">Link</a></li>
+        <!--<li class="dropdown">
+        <!--  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+        <!--  <ul class="dropdown-menu">
+        <!--    <li><a href="#">Action</a></li>
+        <!--    <li><a href="#">Another action</a></li>
+        <!--    <li><a href="#">Something else here</a></li>
+        <!--    <li class="divider"></li>
+        <!--    <li><a href="#">Separated link</a></li>
+        <!--  </ul>
+        <!--</li>-->
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
@@ -67,5 +61,93 @@
 
 <%= yield %>
 
+  <script type="text/javascript">
+    $(function(){
+      //window.query_cache = {};
+      var labels = [];
+      var mapped = {};
+      var ids = [];
+      $(".typeahead").typeahead({
+        source: function (query, process) {
+          labels = [];
+          mapped = {};
+
+          return $.ajax({
+            url: "http://localhost:3000/search",
+            type: 'get',
+            data: { query: query },
+            dataType: 'json',
+            success: function (result) {
+              labels = [];
+              ids = [];
+
+              
+              $.each(result, function (i, item) {
+                 //evita repetidos
+                 
+                  //console.log(item.tipo + " "+item.id+ " "+item.title)
+                  if (jQuery.inArray( item.id + "-"+ item.title, ids ) == -1 ){
+                     mapped[item.title] = {
+                      id: item.id,
+                      title: item.title,
+                      category: item.category,
+                      tipo: item.tipo,
+                      img: item.img,
+                      link: item.link
+                    }
+                    ids.push(item.id + "-"+ item.title)
+                    labels.push(item.title)
+                }
+          
+                //alert(item.id + item.title)
+
+              });
+              return process(labels);
+
+            }
+          });
+          },
+          highlighter: function(item){
+            var p = mapped[item];
+            var title = p.title;
+            if(title.length > 35){
+              title = title.substring(0,32) + '...';
+            }
+            /*var itm = ''
+            + "<div class='typeahead_wrapper'>"
+            + "<img class='typeahead_photo' width=\"20px\"src='"+ p.img +"' />"
+            + "<div class='typeahead_labels'>"
+            + "<div class='typeahead_primary'>" + title + "</div>"
+            + "<span class='typeahead_typo'> "+ p.tipo +"</span></div>"
+            + "</div>"
+            + "</div>";*/
+            var itm = ''
+            + "<div class='row autocompleteGradient'>"
+            + "<div class='col-md-2'>"
+            + "<img width=\"20px\"src='"+ p.img +"' />"
+            + "</div>"
+            + "<div class='col-md-10'>"
+            + "<div class='typeahead_primary'>" + title + "</div>"
+            + "<span style='font-size:10px;'> "+ p.tipo +"</span>"
+            + "</div>"
+            + "</div>"
+            return itm;
+          },
+          updater: function ( item ) {
+              //save the id value into the hidden field
+              $( "#IdControl" ).val( mapped[item].id );
+              //alert(mapped[item].id)
+              window.location.href = mapped[item].link;
+              //return the string you want to go into the textbox (the name)
+              //alert(item)
+              //return item;
+            }
+          });
+
+});
+</script>
+
 </body>
+
+
 </html>

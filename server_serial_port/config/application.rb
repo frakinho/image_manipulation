@@ -17,6 +17,19 @@ module ServerSerialPort
     # Add variable to DEBUG 
     config.my_app = ActiveSupport::OrderedOptions.new
 
+    begin
+      $global_variable = SerialPort.new("/dev/tty.usbmodem1421", 9600, 8, 1, SerialPort::NONE)
+      puts "\n\n\n\n\n\n\n ****************************************** AQUI **************************\n\n\n\n\n\n\n"
+    rescue => e
+      begin 
+        $global_variable = SerialPort.new("/dev/tty.usbmodem1411", 9600, 8, 1, SerialPort::NONE)
+      rescue => fl
+        puts "\n\n\n\n\n\n\n ****************************************** ERRROR **************************\n\n\n\n\n\n\n"
+      end
+    end
+
+    config.my_app.serial_port = $global_variable
+
     if RUBY_PLATFORM.include? "linux"
         puts "Linux Operating SYSTEM"
         config.PLATFORM = 1

@@ -1,32 +1,51 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Title:</strong>
-  <%= @book.title %>
-</p>
+<div style="padding-left:10%;padding-right:10%;padding-top:20px;">
+  <div class="panel panel-default">
+    <div class="panel-heading">Lending</div>
+      <div class="row">
+        <div class="col-md-4">
+          <p style="text-align: center;padding-top:10px;">
+            <%= image_tag(@book.image.url(:medium)) %>
+          </p>
+        </div>
+        <div class="col-md-8" style="padding-top:20px;">
+          <p>
+            <strong>Title</strong><br>
+            <%= @book.title %>
+          </p>
 
-<p>
-  <strong>Weight:</strong>
-  <%= @book.weight %> Kg
-</p>
+          <p>
+            <strong>Weight</strong><br>
+            <%= @book.weight %> Kg
+          </p>
 
-<p>
-  <strong>Other Weight:</strong>
-  <%= @book.weight %> Kg
-</p>
-<p>
-  <strong>width:</strong>
-  <%= @book.size_width %> cm
-</p>
-<p>
-  <strong>Height:</strong>
-  <%= @book.size_height %> cm
-</p>
+          <p>
+            <strong>Other Weight</strong><br>
+            <%= @book.weight %> Kg
+          </p>
+          <p>
+            <strong>Width</strong><br>
+            <%= @book.size_width %> cm
+          </p>
+          <p>
+            <strong>Height</strong><br>
+            <%= @book.size_height %> cm
+          </p>
 
-<p>
-  <strong>Barcode:</strong>
-  <%= @book.barcode %>
-</p>
+          <p>
+            <strong>Barcode</strong><br>
+            <%= @book.barcode %>
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md12" style="text-align:center;">
+          <%= link_to 'Edit', edit_book_path(@book) %> |
+          <%= link_to 'Back', books_path %>
+        </div>
+      </div>
+      
+  </div>
+</div>
 
-<%= link_to 'Edit', edit_book_path(@book) %> |
-<%= link_to 'Back', books_path %>

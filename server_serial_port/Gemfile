@@ -45,9 +45,14 @@ gem "paperclip", "~> 4.1"
 
 gem "thin"
 
+gem "searchkick"
+
+gem 'will_paginate-bootstrap'
+
+gem 'utf8-cleaner'
+
+
 # SSIM Algorithm
-
-
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'

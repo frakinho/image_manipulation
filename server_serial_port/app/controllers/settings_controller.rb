@@ -64,9 +64,7 @@ class SettingsController < ApplicationController
     puts params
     camera = params["camera"]
 
-
     puts "CAMERA: #{camera}"
-
 
     ServerSerialPort::Application.config.my_app.camera = camera
     if ServerSerialPort::Application.config.my_app.camera.nil?

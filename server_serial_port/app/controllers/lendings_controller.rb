@@ -6,7 +6,9 @@ class LendingsController < ApplicationController
   # GET /lendings
   # GET /lendings.json
   def index
-    @lendings = Lending.all.reverse
+    #@lendings = Lending.all.reverse
+    @lendings = Lending.paginate(:page => params[:page],:order => "created_at DESC")
+
   end
 
   # GET /lendings/1
@@ -25,10 +27,16 @@ class LendingsController < ApplicationController
     @weight_perc = @lending.calculate_error_weight
     
 
-    @lending_or_not = @lending.lending_calculation
 
-    @lending.lending = @lending_or_not
-    @lending.save
+    if @lending.lending.nil?
+      @lending_or_not = @lending.lending_calculation
+
+      @lending.lending = @lending_or_not
+      @lending.save
+    else
+      @lending_or_not = @lending.lending
+    end
+    
   end
 
   # POST /lendings
@@ -94,109 +102,99 @@ class LendingsController < ApplicationController
     book = Book.where(barcode: params["barcode"])[0]
     
     puts "coisa => #{book}"
+
+    puts "Teste_1"
     if book.nil?
       book = Book.new(:biblionumber => params["biblionumber"],:author => params["author"],:title => params["title"],:barcode => params["barcode"])
       book.save
-      puts "ENTREIIIII =>>>>>"
-      #json_text = {:name => 'nome',:age => 23,:sucess => 'sucesso',:lending => 0}.to_json
-      #render :json => json_text
-      #json_text = {:name => 'nome',:age => 23,:sucess => 'insucesso',:lending => 1}.to_json
-      #render :json => json_text
     end
-
+    puts "Teste_2"
     #Read weight from balance
-    
-    begin
-      $global_variable = SerialPort.new("/dev/tty.usbmodem1421", 9600, 8, 1, SerialPort::NONE)
-      puts "\n\n\n\n\n\n\n ****************************************** AQUI **************************\n\n\n\n\n\n\n"
-    rescue => e
-      begin 
-        $global_variable = SerialPort.new("/dev/tty.usbmodem1411", 9600, 8, 1, SerialPort::NONE)
-      rescue => fl
-        puts "\n\n\n\n\n\n\n ****************************************** ERRROR **************************\n\n\n\n\n\n\n"
-      end
-    end
+  
+    sp = ServerSerialPort::Application.config.my_app.serial_port
+    puts "Teste_3"
+    if sp.nil?
 
-    sp = $global_variable 
-    bol = sp.flush_input
-    @read_value = sp.gets.chomp
-    puts "Valor: => #{@read_value}"
-    bol = sp.flush_input
-    puts "Valor do FLUSH => #{bol}"
-    @read_value1 = sp.gets.chomp
-    puts "Valor: => #{@read_value1}"
-    bol = sp.flush_input
-    @read_value2 = sp.gets.chomp
-    puts "Valor: => #{@read_value2}"
-    bol = sp.flush_input
-    sp.close
+      json_text = {:error => 1,:found => 'not_found'}.to_json
 
-    var_system = "imagesnap -d #{ServerSerialPort::Application.config.my_app.camera}"
+      render :json => json_text
 
-    puts "Executei este: #{var_system}"
-    system "imagesnap -d \"#{ServerSerialPort::Application.config.my_app.camera}\""
-    File.open("snapshot.jpg") do |file_image|
-      @lending = Lending.new(:user_id => params["user_id"],:book_id => book.id,:weight => ((@read_value.to_f+@read_value1.to_f+@read_value2.to_f) / 4),:image => file_image)
-    end #file gets closed automatically here
-
-    if @lending.save
-      book = @lending.book
-      a = Image_Similarity.new
-      y,x = a.size_calculation(@lending.image.path)
-
-      ## Verify if book contains image
-      @lending.security_value = book.field_verify(@lending.get_path_crop_image,x,y)        
-      ###
-      # GET size of image
-      @lending.size_width = x
-      @lending.size_height = y
-
-      #@lending.ssim = a.ssim_processing(@lending.image.path,@lending.book.image.path)
-      @lending.rmse = a.RMSE(@lending.get_path_crop_image,@lending.book.image.path)
-
-      #@lending.rmse = a.RMSE(@lending.book.image.path,@lending.book.image.path)
-      #@lending.rmse = a.RMSE("file:///Users/frakinho/Documents/Arduino/rails_server/server_serial_port/dest.jpg","file:///Users/frakinho/Documents/Arduino/rails_server/server_serial_port/neg.jpg")
-      @lending.save
-
-      #@size_perc = @lending.calculate_error_size
-      #@weight_perc = @lending.calculate_error_weight
-      @lending_or_not = @lending.lending_calculation
-      @lending.lending = @lending_or_not
-      @lending.save
-
-
-      #format.html { render action: 'new' }
-      #format.json { render json: @lending }
-
-      if @lending_or_not
-        json_text = {:name => 'nome',:age => 23,:sucess => 'sucesso',:lending => 1}.to_json
-      else
-        json_text = {:name => 'nome',:rmse => 23,:sucess => 'sucesso',:lending => 0}.to_json
-      end
-      render :json => @lending
-
-      
-      #format.html { redirect_to @bending, notice: 'Book was successfully created.' }
-      #format.json { render action: 'show', status: :created, location: @bending }
     else
-      format.html { render action: 'new' }
-      format.json { render json: "Teste", status: :unprocessable_entity }
+      puts "Teste_4"
+      opp = sp.flush_input
+      puts "Flush result: #{opp}"
+      puts "Teste_5: TIMEOUT: #{sp.read_timeout}"
+      @read_value = sp.gets.chomp
+      puts "Teste_6"
+      @read_value1 = sp.gets.chomp
+      puts "Teste_7"
+      @read_value2 = sp.gets.chomp
+      puts "Teste_8"
+      sp.flush_input
+      puts "Teste_9"
+
+      system "imagesnap -d \"#{ServerSerialPort::Application.config.my_app.camera}\""
+
+      weight = (((@read_value.to_f+@read_value1.to_f+@read_value2.to_f) / 3))
+      puts "AVG: #{weight}"
+
+      weight_total = weight + 0.100
+
+      puts "Total: #{weight_total}"
+
+      File.open("snapshot.jpg") do |file_image|
+        @lending = Lending.new(:user_id => params["user_id"],:book_id => book.id,:weight => weight_total,:image => file_image)
+        if @lending.book.weight.nil?
+          @lending.book.weight = weight_total
+        end
+      end #file gets closed automatically here
+
+      if @lending.save
+        book = @lending.book
+        a = Image_Similarity.new
+        y,x = a.size_calculation(@lending.image.path)
+
+        ## Verify if book contains image
+        @lending.security_value = book.field_verify(@lending.get_path_crop_image,x,y)        
+        ###
+        # GET size of image
+        @lending.size_width = x
+        @lending.size_height = y
+
+        #@lending.ssim = a.ssim_processing(@lending.image.path,@lending.book.image.path)
+        @lending.rmse = a.RMSE(@lending.get_path_crop_image,@lending.book.image.path)
+
+        #@lending.rmse = a.RMSE(@lending.book.image.path,@lending.book.image.path)
+        #@lending.rmse = a.RMSE("file:///Users/frakinho/Documents/Arduino/rails_server/server_serial_port/dest.jpg","file:///Users/frakinho/Documents/Arduino/rails_server/server_serial_port/neg.jpg")
+        @lending.save
+
+        #@size_perc = @lending.calculate_error_size
+        #@weight_perc = @lending.calculate_error_weight
+        @lending_or_not = @lending.lending_calculation
+        @lending.lending = @lending_or_not
+        @lending.save
+
+
+        #format.html { render action: 'new' }
+        #format.json { render json: @lending }
+
+        if @lending_or_not
+          json_text = {:name => 'nome',:age => 23,:sucess => 'sucesso',:lending => 1}.to_json
+        else
+          json_text = {:name => 'nome',:rmse => 23,:sucess => 'sucesso',:lending => 0}.to_json
+        end
+        render :json => @lending
+
+        
+        #format.html { redirect_to @bending, notice: 'Book was successfully created.' }
+        #format.json { render action: 'show', status: :created, location: @bending }
+      else
+        format.html { render action: 'new' }
+        format.json { render json: "Teste", status: :unprocessable_entity }
+      end
+
     end
 
-
-    #puts "========> #{params["barcode"]}"
-    #find_book = Book.where(barcode: params["barcode"])[0]
-    #puts "coisa => #{find_book}"
-    #if find_book.nil?
-    #  book = Book.new(:biblionumber => params["biblionumber"],:author => params["author"],:title => params["title"],:barcode => params["barcode"])
-    #  book.save
-    #  puts "ENTREIIIII =>>>>>"
-    #  json_text = {:name => 'nome',:age => 23,:sucess => 'sucesso',:lending => 0}.to_json
-    #  render :json => json_text
-    #else
-    #  json_text = {:name => 'nome',:age => 23,:sucess => 'insucesso',:lending => 1}.to_json
-    #  render :json => json_text
-    #end
   end
 
   # PATCH/PUT /lendings/1
