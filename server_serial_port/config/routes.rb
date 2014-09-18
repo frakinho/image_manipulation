@@ -1,4 +1,5 @@
 ServerSerialPort::Application.routes.draw do
+  devise_for :patrons
   resources :settings
 
   resources :lendings

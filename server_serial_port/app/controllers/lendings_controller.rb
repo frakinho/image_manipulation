@@ -121,9 +121,7 @@ class LendingsController < ApplicationController
 
     else
       puts "Teste_4"
-      opp = sp.flush_input
-      puts "Flush result: #{opp}"
-      puts "Teste_5: TIMEOUT: #{sp.read_timeout}"
+      sp.flush_input
       @read_value = sp.gets.chomp
       puts "Teste_6"
       @read_value1 = sp.gets.chomp
@@ -138,14 +136,14 @@ class LendingsController < ApplicationController
       weight = (((@read_value.to_f+@read_value1.to_f+@read_value2.to_f) / 3))
       puts "AVG: #{weight}"
 
-      weight_total = weight + 0.100
 
-      puts "Total: #{weight_total}"
+
+      puts "Total: #{weight}"
 
       File.open("snapshot.jpg") do |file_image|
-        @lending = Lending.new(:user_id => params["user_id"],:book_id => book.id,:weight => weight_total,:image => file_image)
+        @lending = Lending.new(:user_id => params["user_id"],:book_id => book.id,:weight => weight,:image => file_image)
         if @lending.book.weight.nil?
-          @lending.book.weight = weight_total
+          @lending.book.weight = weight
         end
       end #file gets closed automatically here
 
@@ -173,6 +171,13 @@ class LendingsController < ApplicationController
         @lending_or_not = @lending.lending_calculation
         @lending.lending = @lending_or_not
         @lending.save
+
+        puts "========>AQUI VOU ESCREVER PARA O ARDUINO COM #{@lending.lending}"
+        if @lending.lending     
+          
+          $global_variable.write 1
+        end 
+
 
 
         #format.html { render action: 'new' }

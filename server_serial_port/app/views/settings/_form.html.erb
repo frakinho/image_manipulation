@@ -1,49 +1,57 @@
-<%= form_for(@setting) do |f| %>
-  <% if @setting.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@setting.errors.count, "error") %> prohibited this setting from being saved:</h2>
 
-      <ul>
-      <% @setting.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+    
 
-  <div class="field">
-    <%= f.label :in_use %><br>
-    <%= f.check_box :in_use %>
-  </div>
-  <div class="field">
-    <%= f.label :debug %><br>
-    <%= f.check_box :debug %>
-  </div>
-  <div class="field">
-    <%= f.label :description %><br>
-    <%= f.text_field :description %>
-  </div>
-  <div class="field">
-    <%= f.label :min_value %><br>
-    <%= f.text_field :min_value, :class => "form-control" %>
-  </div>
-  <div class="field">
-    <%= f.label :security_level %><br>
-    <%= f.text_field :security_level %>
-  </div>
-  <div class="field">
-    <%= f.label :similarity %><br>
-    <%= f.text_field :similarity %>
-  </div>
-  <div class="field">
-    <%= f.label :size %><br>
-    <%= f.text_field :size %>
-  </div>
-  <div class="field">
-    <%= f.label :weight %><br>
-    <%= f.text_field :weight %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+            <%= form_for(@setting) do |f| %>
+              <% if @setting.errors.any? %>
+                <div id="error_explanation">
+                  <h2><%= pluralize(@setting.errors.count, "error") %> prohibited this setting from being saved:</h2>
+
+                  <ul>
+                  <% @setting.errors.full_messages.each do |msg| %>
+                    <li><%= msg %></li>
+                  <% end %>
+                  </ul>
+                </div>
+              <% end %>
+
+              <div class="field">
+                <%= f.label :in_use %><br>
+                <%= f.check_box :in_use %>
+              </div>
+              <div class="field">
+                <%= f.label :debug %><br>
+                <%= f.check_box :debug %>
+              </div>
+              <div class="field">
+                <%= f.label :description %><br>
+                <%= f.text_field :description , :class => "form-control"%>
+              </div>
+              <div class="field">
+                <%= f.label :min_value %><br>
+                <%= f.text_field :min_value, :class => "form-control" %>
+              </div>
+              <div class="field">
+                <%= f.label :security_level %><br>
+                <%= f.text_field :security_level , :class => "form-control"%>
+              </div>
+              <div class="field">
+                <%= f.label :similarity %><br>
+                <%= f.text_field :similarity , :class => "form-control"%>
+              </div>
+              <div class="field">
+                <%= f.label :size %><br>
+                <%= f.text_field :size , :class => "form-control"%>
+              </div>
+              <div class="field">
+                <%= f.label :weight %><br>
+                <%= f.text_field :weight , :class => "form-control"%>
+              </div>
+              <div class="actions">
+                <%= f.submit 'Save' , :class => "btn btn-default", :style => "width:100%;"%>
+              </div>
+            <% end %>
+
+
+
+
+

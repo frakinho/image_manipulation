@@ -51,6 +51,8 @@ gem 'will_paginate-bootstrap'
 
 gem 'utf8-cleaner'
 
+gem 'devise', '~> 3.3.0'
+
 
 # SSIM Algorithm
 

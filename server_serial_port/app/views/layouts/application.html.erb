@@ -9,7 +9,6 @@
 </head>
 <body text-align="center" >
 
-
 <nav class="navbar navbar-default" role="navigation">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -43,6 +42,9 @@
             <li class="divider"></li>
           </ul>
         </li>
+        <% if patron_signed_in? %>
+          <li><%= link_to "Logout", destroy_patron_session_path, method: :delete, :class => 'navbar-link'  %>
+        <% end %>
         <!--<li><a href="#">Link</a></li>
         <!--<li class="dropdown">
         <!--  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
@@ -58,6 +60,13 @@
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
+
+<% if notice %>
+  <p class="alert alert-success"><%= notice %></p>
+<% end %>
+<% if alert %>
+  <p class="alert alert-danger"><%= alert %></p>
+<% end %>
 
 <%= yield %>
 

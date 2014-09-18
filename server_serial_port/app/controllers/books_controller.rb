@@ -27,6 +27,7 @@ class BooksController < ApplicationController
   # GET /books
   # GET /books.json
   def index
+    $global_variable.write 1
     @all_books = Book.all.count
     @books = Book.paginate(:page => params[:page],:order => "created_at DESC")
 
